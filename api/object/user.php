@@ -30,5 +30,27 @@ class User{
     
         return $stmt;
     }
+
+    // create product
+    function create(){
+        $q = "INSERT INTO
+                " . $this->table_name . " (id, username, password, email, firstname, lastname) VALUES (:id, :username, :password, :email, :firstname, :lastname) ";
+  
+        // prepare query
+        $stmt = $this->conn->prepare($q);
+
+        // bind values
+        $stmt->bindParam(":id", $this->id);
+        $stmt->bindParam(":username", $this->username);
+        $stmt->bindParam(":password", $this->password);
+        $stmt->bindParam(":email", $this->email);
+        $stmt->bindParam(":firstname", $this->firstname);
+        $stmt->bindParam(":lastname", $this->lastname);
+        
+        $stmt->execute();
+        print_r($stmt);
+        return $stmt;
+        
+    }
 }
 ?>
