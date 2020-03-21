@@ -5,14 +5,14 @@ header("Content-Type: application/json; charset=UTF-8");
 
 // include database and object files
 include_once '../config/database.php';
-include_once '../object/user.php';
+include_once '../object/subject.php';
   
 // instantiate database and product object
 $database = new Database();
 $db = $database->getConnection();
   
 // initialize object
-$user = new User($db);
+$user = new Subject($db);
 
 $stmt = $user->read();
 $num = $stmt->rowCount();
@@ -32,27 +32,16 @@ if($num>0){
         // this will make $row['name'] to
         // just $name only
         extract($row);
-        if($account_type == 3){
-            $user_item=array(
-                "id" => $id,
-                "email" => $email,
-                "account_type" => $account_type,
-                "first_name" => $first_name,
-                "last_name" => $last_name,
-                "grade_year_level" => $grade_year_level,
-                "acad_year"=>$acad_year,
-                "subjects"=>implode(',',$subjects)
-            );
-        } else{
-            $user_item=array(
-                "id" => $id,
-                "email" => $email,
-                "account_type" => $account_type,
-                "first_name" => $first_name,
-                "last_name" => $last_name
-            );
-        }
-        
+  
+        $user_item=array(
+            "id" => $id,
+            "subject_id" => $subject_id,
+            "subject_name" => $subject_name,
+            "level" => $level,
+            "grade_year" => $grade_year,
+            "acad_year" => $acad_year,
+            "assigned_teacher" => $assigned_teacher
+        );
   
         array_push($users_arr["records"], $user_item);
     }

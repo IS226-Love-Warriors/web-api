@@ -7,10 +7,15 @@ class User{
   
     // object properties
     public $id;
-    public $username;
     public $email;
-    public $firstname;
-    public $lastname;
+    public $password;
+    public $account_type;
+    public $user_id;
+    public $first_name;
+    public $last_name;
+    public $grade_year_level;
+    public $acad_year;
+    public $subjects;
 
     // constructor with $db as database connection
     public function __construct($db){
@@ -34,21 +39,24 @@ class User{
     // create product
     function create(){
         $q = "INSERT INTO
-                " . $this->table_name . " (id, username, password, email, firstname, lastname) VALUES (:id, :username, :password, :email, :firstname, :lastname) ";
+                " . $this->table_name . " (email, password, account_type, user_id, first_name, last_name, grade_year_level, acad_year, subjects) 
+                VALUES (:email, :password, :account_type, :user_id, :first_name, :last_name, :grade_year_level, :acad_year, :subjects) ";
   
         // prepare query
         $stmt = $this->conn->prepare($q);
-
+        $sub = json_encode($this->subjects);
         // bind values
-        $stmt->bindParam(":id", $this->id);
-        $stmt->bindParam(":username", $this->username);
-        $stmt->bindParam(":password", $this->password);
         $stmt->bindParam(":email", $this->email);
-        $stmt->bindParam(":firstname", $this->firstname);
-        $stmt->bindParam(":lastname", $this->lastname);
+        $stmt->bindParam(":password", $this->password);
+        $stmt->bindParam(":account_type", $this->account_type);
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->bindParam(":first_name", $this->first_name);
+        $stmt->bindParam(":last_name", $this->last_name);
+        $stmt->bindParam(":grade_year_level", $this->grade_year_level);
+        $stmt->bindParam(":acad_year", $this->acad_year);
+        $stmt->bindParam(":subjects", $sub);
         
         $stmt->execute();
-        print_r($stmt);
         return $stmt;
         
     }
