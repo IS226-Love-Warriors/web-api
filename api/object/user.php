@@ -15,14 +15,13 @@ class User{
     public $last_name;
     public $grade_year_level;
     public $acad_year;
-    public $subjects;
 
     // constructor with $db as database connection
     public function __construct($db){
         $this->conn = $db;
     }
 
-    // read products
+    // read users
     function read(){
         // select all query
         $query = "SELECT * FROM " . $this->table_name . "";
@@ -32,19 +31,30 @@ class User{
     
         // execute query
         $stmt->execute();
+        return $stmt;
+    }
+
+    //get one record
+    function readOne(){
+        // select all query
+        $query = "SELECT * FROM " . $this->table_name . " WHERE email='" . $this->email . "'";
     
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
         return $stmt;
     }
 
     // create product
-    function create(){
+    function userCreate(){
         $q = "INSERT INTO
-                " . $this->table_name . " (email, password, account_type, user_id, first_name, last_name, grade_year_level, acad_year, subjects) 
-                VALUES (:email, :password, :account_type, :user_id, :first_name, :last_name, :grade_year_level, :acad_year, :subjects) ";
+                " . $this->table_name . " (email, password, account_type, user_id, first_name, last_name, grade_year_level, acad_year) 
+                VALUES (:email, :password, :account_type, :user_id, :first_name, :last_name, :grade_year_level, :acad_year) ";
   
         // prepare query
         $stmt = $this->conn->prepare($q);
-        $sub = json_encode($this->subjects);
         // bind values
         $stmt->bindParam(":email", $this->email);
         $stmt->bindParam(":password", $this->password);
@@ -54,7 +64,6 @@ class User{
         $stmt->bindParam(":last_name", $this->last_name);
         $stmt->bindParam(":grade_year_level", $this->grade_year_level);
         $stmt->bindParam(":acad_year", $this->acad_year);
-        $stmt->bindParam(":subjects", $sub);
         
         $stmt->execute();
         return $stmt;

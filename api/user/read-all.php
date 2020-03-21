@@ -16,7 +16,7 @@ $user = new User($db);
 
 $stmt = $user->read();
 $num = $stmt->rowCount();
-
+print_r($num);
 // check if more than 0 record found
 if($num>0){
   
