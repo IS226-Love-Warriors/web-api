@@ -66,8 +66,25 @@ class StudentSubjectGrade{
         $stmt->bindParam(":work_book", $criteria4);
         
         $stmt->execute();
-        return $stmt;
+        return $stmt;  
+    }
+
+    // update student_subject_grade
+    function ssgUpdate(){
         
+        $criteria1 = $this->assignment * 0.35; //times 35%
+        $criteria2 = $this->class_work * 0.15; //times 15%
+        $criteria3 = $this ->labs_projects * 0.25; //times 25%
+        $criteria4 = $this->work_book * 0.25; //times 25%
+        $final_grade = $criteria1 + $criteria2 + $criteria3 + $criteria4;
+
+        $q = "UPDATE " . $this->table_name . " SET assignment=" . $this->assignment . ", class_work=" . $this->class_work . ", labs_projects =" . $this->labs_projects . ", work_book =" . $this->work_book . ", final_grade =" . $final_grade .
+        "WHERE student_id = '". $this->student_id . "' AND subject_id ='" . $this->subject_id . "'";
+        
+        // prepare query
+        $stmt = $this->conn->prepare($q);
+        $stmt->execute();
+        return $stmt;  
     }
 }
 ?>
