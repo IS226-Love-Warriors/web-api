@@ -36,7 +36,8 @@ $data = json_decode(file_get_contents("php://input"));
     $user->acad_year = $data->acad_year;
     $user->first_name = $data->first_name;
     $user->last_name = $data->last_name;
-
+    $user->created_at = date("Y/m/d");
+    
     $stmt = $user->readOne();
     $num = $stmt->rowCount();
 

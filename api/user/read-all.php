@@ -16,13 +16,12 @@ $user = new User($db);
 
 $stmt = $user->read();
 $num = $stmt->rowCount();
-print_r($num);
 // check if more than 0 record found
 if($num>0){
   
-    // products array
+    // user array
     $users_arr=array();
-    $users_arr["records"]=array();
+    $users_arr["users"]=array();
   
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -40,8 +39,7 @@ if($num>0){
                 "first_name" => $first_name,
                 "last_name" => $last_name,
                 "grade_year_level" => $grade_year_level,
-                "acad_year"=>$acad_year,
-                "subjects"=>implode(',',$subjects)
+                "acad_year"=>$acad_year
             );
         } else{
             $user_item=array(
@@ -54,20 +52,20 @@ if($num>0){
         }
         
   
-        array_push($users_arr["records"], $user_item);
+        array_push($users_arr["users"], $user_item);
     }
   
     // set response code - 200 OK
     http_response_code(200);
   
-    // show products data in json format
+    // show users data in json format
     echo json_encode($users_arr);
 } else{
   
     // set response code - 404 Not found
     http_response_code(404);
   
-    // tell the user no products found
+    // tell the user no record found
     echo json_encode(
         array("message" => "No users found.")
     );
