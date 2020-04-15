@@ -1,21 +1,3 @@
 {
-    "name": "is226-love-warriors/web-api",
-    "description": "IS215 - Team Love Warriors Web API",
-    "type": "project",
-    "authors": [{
-            "name": "Abad, Julius R"
-        },
-        {
-            "name": "Estandarde, Lisette"
-        },
-        {
-            "name": "Rotoni, Jeremy"
-        }
-    ],
-    "require": {
-        "php":  "^7.0.0"
-    },
-    "require-dev": {
-        "heroku/heroku-buildpack-php": "*"
-      }
+    
 }

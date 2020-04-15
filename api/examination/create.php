@@ -8,49 +8,46 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 // include database and object files
 include_once '../config/database.php';
-include_once '../object/subject.php';
+include_once '../object/examination.php';
 
 // instantiate database and product object
 $database = new Database();
 $db = $database->getConnection();
   
 // initialize object
-$subject = new Subject($db);
+$exams = new Examination($db);
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
     // make sure data is not empty
     if(!empty($data)){
     // set user property values
-    $subject->subject_id = $data->subject_id;
-    $subject->subject_name = $data->subject_name;
-    $subject->level = $data->level;
-    $subject->grade_year = $data->grade_year;
-    $subject->acad_year = $data->acad_year;
-    $subject->assigned_teacher = $data->assigned_teacher;
+    $exams->exam_id = uniqid('exam_');
+    $exams->subject_id = $data->subject_id;
+    $exams->exam_date = $data->exam_date;
+    $exams->exam_desc = $data->exam_desc;
 
     // create the user
-    if($subject->create()){
+    if($exams->createExam()){
         // set response code - 201 created
         http_response_code(201);
         // tell the subject
-        echo json_encode(array("message" => "Subject was created."));
+        echo json_encode(array("message" => "Examination was created."));
     }
   
     // if unable to create the subject, tell the subject
     else{
         http_response_code(503);
-        echo json_encode(array("message" => "Unable to create subject."));
+        echo json_encode(array("message" => "Unable to create examination."));
     }
 }
-  
-// tell the subject data is incomplete
+// tell the exam data is incomplete
 else{
   
     // set response code - 400 bad request
     http_response_code(400);
   
     // tell the subject
-    echo json_encode(array("message" => "Unable to create subject. Data is incomplete."));
+    echo json_encode(array("message" => "Unable to create examination. Data is incomplete."));
 }
 ?>
