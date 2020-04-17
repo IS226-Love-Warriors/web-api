@@ -5,7 +5,7 @@ header('Access-Control-Allow-Credentials', true);
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
 header("Access-Control-Max-Age: 3600");
-header('Access-Control-Allow-Headers: Origin, X-Auth-Token, Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+header('Access-Control-Allow-Headers: Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 header('Access-Control-Allow-Origin $http_origin');
 
 // include database and object files
