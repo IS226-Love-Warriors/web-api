@@ -47,6 +47,18 @@ class User{
         return $stmt;
     }
 
+    function readOneById(){
+        // select all query
+        $query = "SELECT * FROM " . $this->table_name . " WHERE user_id='" . $this->user_id . "'";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
+
     // create product
     function userCreate(){
         $q = "INSERT INTO
