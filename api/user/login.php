@@ -31,8 +31,15 @@ if(!empty($data)){
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             extract($row);
             if($enteredPass == $password){
+                
+                $data->id = $id;
+                $data->email = $email;
+                $data->account_type = $account_type;
+                $data->first_name = $first_name;
+                $data->last_name=$last_name;
+
                 http_response_code(200);
-                echo json_encode(array("code" => "Ok", "message" => "Successfully logged in", "data" => "{ id : $id, email : $email, account_type : $account_type, first_name : $first_name, last_name : $last_name }"));
+                echo json_encode(array("code" => "Ok", "message" => "Successfully logged in","data" => $data));
             }
             else {
                 http_response_code(401);
