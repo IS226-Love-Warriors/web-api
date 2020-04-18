@@ -81,7 +81,7 @@ $data = json_decode(file_get_contents("php://input"));
                     }
                 }
             }
-            
+            unset($user->id);
             unset($user->password);
             // set response code - 201 created
             http_response_code(201);
