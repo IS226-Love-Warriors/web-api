@@ -82,10 +82,11 @@ $data = json_decode(file_get_contents("php://input"));
                 }
             }
             
+            unset($user->password);
             // set response code - 201 created
             http_response_code(201);
             // tell the user
-            echo json_encode(array("message" => "User was created."));
+            echo json_encode(array("code"=>"Ok", "message" => "User was created.", "data"=> $user));
         }
         // if unable to create the user, tell the user
         else{
