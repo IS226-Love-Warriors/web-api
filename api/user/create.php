@@ -31,7 +31,7 @@ $data = json_decode(file_get_contents("php://input"));
     $user->email = $data->email;
     $user->account_type = $data->account_type;
     $user->password = md5($data->password);
-    $user->user_id = $data->user_id;
+    $user->user_id = uniqid('user_');
     $user->grade_year_level = $data->grade_year_level;
     $user->acad_year = $data->acad_year;
     $user->first_name = $data->first_name;
@@ -64,7 +64,7 @@ $data = json_decode(file_get_contents("php://input"));
                     while ($row = $subj_stmt->fetch(PDO::FETCH_ASSOC)){
                         extract($row);
                         $final_grade = 0;
-                        $subject_student_grade->student_id = $data->user_id;
+                        $subject_student_grade->student_id = $user->user_id;
                         $subject_student_grade->subject_id = $subject_id;
                         $subject_student_grade->final_grade = $final_grade;
                         $subject_student_grade->ssgCreate();

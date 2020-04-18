@@ -8,7 +8,8 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 // include database and object files
 include_once '../config/database.php';
-include_once '../object/examination.php';
+include_once '../object/question.php';
+include_once '../object/answer.php';
 
 // instantiate database and product object
 $database = new Database();
@@ -31,22 +32,20 @@ $data = json_decode(file_get_contents("php://input"));
     // create the question
     if($questions->createExamQuestions()){
         // set question property values
-        $answers->answer_id = uniqid('answer_');
         $answers->question_id = $questions->question_id;
         for($x = 0; $x < count($data->choices); $x++){
-            $answers->answer_text = $data->answer_text;
-            $answers->seq_no = $data->seq_no;
-            $answers->is_correct = $data->is_correct;
+            $answers->answer_id = uniqid('answer_');
+            $answers->answer_text = $data->choices[$x]->answer_text;
+            $answers->seq_no = $data->choices[$x]->seq_no;
+            $answers->is_correct = $data->choices[$x]->is_correct;
 
-            if($answers->createExamAnswers()){
-                http_response_code(201);
-                echo json_encode(array("message" => "Item added."));
-            }
-            else{
-                http_response_code(503);
-                echo json_encode(array("message" => "Unable to add an item."));
-            }
+            $answers->createQuestionAnswers();
+
         }
+
+        http_response_code(201);
+        echo json_encode(array("message" => "Item added."));
+        
     }
     // if unable to create the subject, tell the subject
     else{

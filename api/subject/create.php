@@ -22,7 +22,7 @@ $data = json_decode(file_get_contents("php://input"));
     // make sure data is not empty
     if(!empty($data)){
     // set user property values
-    $subject->subject_id = $data->subject_id;
+    $subject->subject_id = uniqid('subject_');
     $subject->subject_name = $data->subject_name;
     $subject->level = $data->level;
     $subject->grade_year = $data->grade_year;
