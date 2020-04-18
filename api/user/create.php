@@ -31,7 +31,17 @@ $data = json_decode(file_get_contents("php://input"));
     $user->email = $data->email;
     $user->account_type = $data->account_type;
     $user->password = md5($data->password);
-    $user->user_id = uniqid('user_');
+
+    if($data->account_type == 1){
+        $user->user_id = uniqid('admin_');
+    }
+    if($data->account_type == 2){
+        $user->user_id = uniqid('tchr_');
+    }
+    else{
+        $user->user_id = uniqid('stdnt_');
+    }
+    
     $user->grade_year_level = $data->grade_year_level;
     $user->acad_year = $data->acad_year;
     $user->first_name = $data->first_name;
