@@ -34,7 +34,7 @@ if($num>0){
         extract($row);
   
         $user_item=array(
-            "id" => $user_id,
+            "id" => $id,
             "subject_id" => $subject_id,
             "subject_name" => $subject_name,
             "level" => $level,

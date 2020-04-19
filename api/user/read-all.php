@@ -33,7 +33,7 @@ if($num>0){
         extract($row);
         if($account_type == 3){
             $user_item=array(
-                "id" => $id,
+                "id" => $user_id,
                 "email" => $email,
                 "account_type" => $account_type,
                 "first_name" => $first_name,
@@ -43,7 +43,7 @@ if($num>0){
             );
         } else{
             $user_item=array(
-                "id" => $id,
+                "id" => $user_id,
                 "email" => $email,
                 "account_type" => $account_type,
                 "first_name" => $first_name,

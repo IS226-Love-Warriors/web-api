@@ -42,7 +42,7 @@ if(!empty($data)){
                 echo json_encode(array("code" => "Ok", "message" => "Successfully logged in","data" => $data));
             }
             else {
-                http_response_code(401);
+                http_response_code(200);
                 echo json_encode(array("code" => "Error", "message" => "Invalid password"));
             }
         }
