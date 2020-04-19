@@ -23,16 +23,15 @@ if(!empty($data)){
     $no_passed_value = 0;
     $student_subject_grade->student_id = $data->student_id;
     $student_subject_grade->subject_id = $data->subject_id;
+    $student_subject_grade->grading_period = $data->grading_period;
     $student_subject_grade->assignment = !empty($data->assignment) ? $data->assignment:$no_passed_value;
     $student_subject_grade->class_work = !empty($data->class_work) ? $data->class_work : $no_passed_value;
     $student_subject_grade->labs_projects = !empty($data->labs_projects) ? $data->labs_projects : $no_passed_value;
     $student_subject_grade->work_book = !empty($data->work_book) ? $data->work_book : $no_passed_value;
     $student_subject_grade->ssgUpdate();
 
-    // set response code - 200 OK
     http_response_code(200);
-    // show message response
-    echo "Record was updated.";
+    echo json_encode(array("code" => "Ok", "message" => "Record updated"));
 }
 
 ?>

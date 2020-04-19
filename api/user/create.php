@@ -73,11 +73,14 @@ $data = json_decode(file_get_contents("php://input"));
                 else{
                     while ($row = $subj_stmt->fetch(PDO::FETCH_ASSOC)){
                         extract($row);
-                        $final_grade = 0;
-                        $subject_student_grade->student_id = $user->user_id;
-                        $subject_student_grade->subject_id = $subject_id;
-                        $subject_student_grade->final_grade = $final_grade;
-                        $subject_student_grade->ssgCreate();
+                        for($x = 1; $x<5; $x++){
+                            $final_grade = 0;
+                            $subject_student_grade->student_id = $user->user_id;
+                            $subject_student_grade->subject_id = $subject_id;
+                            $subject_student_grade->grading_period = $x;
+                            $subject_student_grade->final_grade = $final_grade;
+                            $subject_student_grade->ssgCreate();
+                        }
                     }
                 }
             }

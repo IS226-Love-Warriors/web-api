@@ -46,8 +46,8 @@ class StudentSubjectGrade{
     // create student_subject_grade
     function ssgCreate(){
         $q = "INSERT INTO
-                " . $this->table_name . " (student_id, subject_id, final_grade, assignment, class_work, labs_projects, work_book) 
-                VALUES (:student_id, :subject_id, :final_grade, :assignment, :class_work, :labs_projects, :work_book) ";
+                " . $this->table_name . " (student_id, subject_id, grading_period, final_grade, assignment, class_work, labs_projects, work_book) 
+                VALUES (:student_id, :subject_id, :grading_period, :final_grade, :assignment, :class_work, :labs_projects, :work_book) ";
   
         // prepare query
         $stmt = $this->conn->prepare($q);
@@ -59,6 +59,7 @@ class StudentSubjectGrade{
         // bind values
         $stmt->bindParam(":student_id", $this->student_id);
         $stmt->bindParam(":subject_id", $this->subject_id);
+        $stmt->bindParam(":grading_period", $this->grading_period);
         $stmt->bindParam(":final_grade", $this->final_grade);
         $stmt->bindParam(":assignment", $criteria1);
         $stmt->bindParam(":class_work", $criteria2);
@@ -79,7 +80,7 @@ class StudentSubjectGrade{
         $final_grade = $criteria1 + $criteria2 + $criteria3 + $criteria4;
 
         $q = "UPDATE " . $this->table_name . " SET assignment=" . $this->assignment . ", class_work=" . $this->class_work . ", labs_projects =" . $this->labs_projects . ", work_book =" . $this->work_book . ", final_grade =" . $final_grade .
-        "WHERE student_id = '". $this->student_id . "' AND subject_id ='" . $this->subject_id . "'";
+        "WHERE ( ( student_id = '". $this->student_id . "' AND subject_id ='" . $this->subject_id . "')) AND ( grading_period =" .$this->grading_period . " )";
         
         // prepare query
         $stmt = $this->conn->prepare($q);
