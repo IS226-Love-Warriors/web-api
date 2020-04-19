@@ -16,13 +16,14 @@ class Examination{
     // create product
     function createExam(){
         $q = "INSERT INTO
-                " . $this->table_name . " (exam_id, subject_id, exam_date, exam_desc) 
-                VALUES (:exam_id, :subject_id, :exam_date, :exam_desc) ";
+                " . $this->table_name . " (grading_period, exam_id, subject_id, exam_date, exam_desc) 
+                VALUES (:grading_period, :exam_id, :subject_id, :exam_date, :exam_desc) ";
   
         // prepare query
         $stmt = $this->conn->prepare($q);
         
         // bind values
+        $stmt->bindParam(":grading_period", $this->grading_period);
         $stmt->bindParam(":exam_id", $this->exam_id);
         $stmt->bindParam(":subject_id", $this->subject_id);
         $stmt->bindParam(":exam_date", $this->exam_date);

@@ -9,47 +9,52 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // include database and object files
 include_once '../config/database.php';
 include_once '../object/result.php';
+include_once '../object/answer.php';
 
 // instantiate database and product object
 $database = new Database();
 $db = $database->getConnection();
   
 // initialize object
-$questions = new Result($db);
+$results = new Result($db);
+$answers = new Answer($db);
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
     // make sure data is not empty
     if(!empty($data)){
-    // set user property values
-    $questions->question_id = uniqid('question_');
-    $questions->exam_id = $data->exam_id;
-    $questions->question_type = $data->question_type;
-    $questions->question_text = $data->question_text;
+    // set question property values
+    for($x = 0; $x < count($data->answers); $x++){
+        $results->result_id = uniqid('result_');
+        $results->student_id = $data->student_id;
+        $results->exam_id = $data->exam_id;
+        $results->question_id = $data->answers[$x]->question_id;
+        $results->seq_no = $data->answers[$x]->seq_no;
+        $results->stud_answer_id = $data->answers[$x]->stud_answer_id;
 
-    // create the question
-    if($questions->createExamQuestions()){
-        // set question property values
-        $answers->question_id = $questions->question_id;
-        for($x = 0; $x < count($data->choices); $x++){
-            $answers->answer_id = uniqid('answer_');
-            $answers->answer_text = $data->choices[$x]->answer_text;
-            $answers->seq_no = $data->choices[$x]->seq_no;
-            $answers->is_correct = $data->choices[$x]->is_correct;
+        $answers->question_id = $data->answers[$x]->question_id;
+        $stmts = $answers->getCorrectAnswer();
+        $nums = $stmts->rowCount();
 
-            $answers->createQuestionAnswers();
-
+        while ($row = $stmts->fetch(PDO::FETCH_ASSOC)){
+            extract($row);
+            $results->answer_id = $answer_id;
+            if($data->answers[$x]->stud_answer_id == $answer_id){
+                $results->is_correct = 1;
+            }
+            else{
+                $results->is_correct = 0;
+            }
+              
         }
+
+        $results->createQuestionAnswers();
+
+    }
 
         http_response_code(201);
         echo json_encode(array("message" => "Item added."));
-        
-    }
-    // if unable to create the subject, tell the subject
-    else{
-        http_response_code(503);
-        echo json_encode(array("message" => "Unable to add an item."));
-    }
+
 }
 // tell the exam data is incomplete
 else{

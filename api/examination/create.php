@@ -23,6 +23,7 @@ $data = json_decode(file_get_contents("php://input"));
     if(!empty($data)){
     // set user property values
     $exams->exam_id = uniqid('exam_');
+    $exams->grading_period = $data->grading_period;
     $exams->subject_id = $data->subject_id;
     $exams->exam_date = $data->exam_date;
     $exams->exam_desc = $data->exam_desc;
