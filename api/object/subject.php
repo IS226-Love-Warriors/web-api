@@ -45,6 +45,19 @@ class Subject{
         return $stmt;
     }
 
+       //get one record
+       function readBySubjId(){
+        // select all query
+        $query = "SELECT * FROM " . $this->table_name . " WHERE subject_id='" . $this->subject_id . "'";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
+
     // create product
     function create(){
         $q = "INSERT INTO

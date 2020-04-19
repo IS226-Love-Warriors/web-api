@@ -13,6 +13,18 @@ class Question{
         $this->conn = $db;
     }
 
+    function readByExamId(){
+        // select all query
+        $query = "SELECT * FROM " . $this->table_name . " WHERE exam_id='" . $this->exam_id . "'";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
+
     // create product
     function createExamQuestions(){
         $q = "INSERT INTO

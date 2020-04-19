@@ -8,20 +8,20 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 // include database and object files
 include_once '../config/database.php';
-include_once '../object/user.php';
+include_once '../object/examination.php';
 
 // instantiate database and product object
 $database = new Database();
 $db = $database->getConnection();
   
 // initialize object
-$user = new User($db);
+$user = new Examination($db);
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
 
 if(!empty($data)){
-    $user->user_id = $data->user_id;
+    $subject->subject_id = $data->user_id;
 
     $stmt = $user->readOneById();
     $num = $stmt->rowCount();
@@ -48,7 +48,7 @@ if(!empty($data)){
         }
     } else {
         http_response_code(404);
-        echo json_encode(array("code" => "Error", "message" => "User does not exists"));
+        echo json_encode(array("code" => "Error", "message" => "Subject does not exists"));
     }
 }
 // tell the user credentials are incomplete
