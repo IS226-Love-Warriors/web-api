@@ -44,7 +44,7 @@ $data = json_decode(file_get_contents("php://input"));
         }
 
         http_response_code(201);
-        echo json_encode(array("message" => "Item added."));
+        echo json_encode(array("message" => "Item added.", "data"=>$questions));
         
     }
     // if unable to create the subject, tell the subject
