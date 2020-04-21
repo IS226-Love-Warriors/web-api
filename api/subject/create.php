@@ -9,6 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // include database and object files
 include_once '../config/database.php';
 include_once '../object/subject.php';
+include_once '../object/user.php';
 
 // instantiate database and product object
 $database = new Database();
@@ -16,6 +17,7 @@ $db = $database->getConnection();
   
 // initialize object
 $subject = new Subject($db);
+$user = new User($db);
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
@@ -31,10 +33,25 @@ $data = json_decode(file_get_contents("php://input"));
 
     // create the user
     if($subject->create()){
+        $user->user_id =$data->assigned_teacher;
+        $stmtu = $user->readOneById();
+        $numu = $stmtu->rowCount();
+
+        while ($rowu = $stmtu->fetch(PDO::FETCH_ASSOC)){
+                
+            extract($rowu);
+            $d->id = $id;
+            $d->user_id = $user_id;
+            $d->name = $first_name . ' ' . $last_name;
+
+            $subject->assigned_teacher = $d;
+           
+        }
+
         // set response code - 201 created
         http_response_code(201);
         // tell the subject
-        echo json_encode(array("message" => "Subject was created."));
+        echo json_encode(array("message" => "Subject was created.", "data" => $subject));
     }
   
     // if unable to create the subject, tell the subject
