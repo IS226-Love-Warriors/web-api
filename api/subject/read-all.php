@@ -6,23 +6,25 @@ header("Content-Type: application/json; charset=UTF-8");
 // include database and object files
 include_once '../config/database.php';
 include_once '../object/subject.php';
+include_once '../object/user.php';
   
 // instantiate database and product object
 $database = new Database();
 $db = $database->getConnection();
   
 // initialize object
-$user = new Subject($db);
+$subject = new Subject($db);
+$user = new User($db);
 
-$stmt = $user->read();
+$stmt = $subject->read();
 $num = $stmt->rowCount();
 
 // check if more than 0 record found
 if($num>0){
   
     // products array
-    $users_arr=array();
-    $users_arr["records"]=array();
+    $subjects_arr=array();
+    $subjects_arr["records"]=array();
   
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -32,25 +34,39 @@ if($num>0){
         // this will make $row['name'] to
         // just $name only
         extract($row);
-  
-        $user_item=array(
-            "id" => $id,
-            "subject_id" => $subject_id,
-            "subject_name" => $subject_name,
-            "level" => $level,
-            "grade_year" => $grade_year,
-            "acad_year" => $acad_year,
-            "assigned_teacher" => $assigned_teacher
-        );
-  
-        array_push($users_arr["records"], $user_item);
+
+        $user->user_id =$assigned_teacher;
+
+        $stmtu = $user->readOneById();
+        $numu = $stmtu->rowCount();
+
+        if($numu > 0){
+            while ($rowu = $stmtu->fetch(PDO::FETCH_ASSOC)){
+                
+                extract($rowu);
+                $d->id = $id;
+                $d->user_id = $user_id;
+                $d->name = $first_name . ' ' . $last_name;
+
+                $subject_item=array(
+                    "id" => $id,
+                    "subject_id" => $subject_id,
+                    "subject_name" => $subject_name,
+                    "level" => $level,
+                    "grade_year" => $grade_year,
+                    "acad_year" => $acad_year,
+                    "assigned_teacher" => $d
+                );
+          
+                array_push($subjects_arr["records"], $subject_item);
+               
+            }
+        } else {
+            http_response_code(200);
+            echo json_encode(array("code" => "Ok", "message" => "Records fetched", "data" => $subjects_arr));
+        }
     }
-  
-    // set response code - 200 OK
-    http_response_code(200);
-  
-    // show products data in json format
-    echo json_encode($users_arr);
+
 } else{
   
     // set response code - 404 Not found
