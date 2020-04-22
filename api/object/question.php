@@ -7,6 +7,7 @@ class Question{
   
     // object properties
     public $id;
+    public $question_id;
 
      // constructor with $db as database connection
      public function __construct($db){
@@ -16,6 +17,18 @@ class Question{
     function readByExamId(){
         // select all query
         $query = "SELECT * FROM " . $this->table_name . " WHERE exam_id='" . $this->exam_id . "'";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function readByQuestionId(){
+        // select all query
+        $query = "SELECT * FROM " . $this->table_name . " WHERE question_id='" . $this->question_id . "'";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);

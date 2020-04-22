@@ -44,8 +44,7 @@ $data = json_decode(file_get_contents("php://input"));
             }
             else{
                 $results->is_correct = 0;
-            }
-              
+            } 
         }
         $results->createQuestionAnswers();
     }

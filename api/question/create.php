@@ -35,6 +35,7 @@ $data = json_decode(file_get_contents("php://input"));
         $answers->question_id = $questions->question_id;
         for($x = 0; $x < count($data->choices); $x++){
             $answers->answer_id = uniqid('answer_');
+            $answers->exam_id = $data->exam_id;
             $answers->answer_text = $data->choices[$x]->answer_text;
             $answers->seq_no = $data->choices[$x]->seq_no;
             $answers->is_correct = $data->choices[$x]->is_correct;
@@ -43,8 +44,9 @@ $data = json_decode(file_get_contents("php://input"));
 
         }
 
+        unset($questions->id);
         http_response_code(201);
-        echo json_encode(array("message" => "Item added.", "data"=>$questions));
+        echo json_encode(array("code" => "Ok","message" => "Item added.", "data"=>$questions));
         
     }
     // if unable to create the subject, tell the subject

@@ -19,6 +19,9 @@ $db = $database->getConnection();
 $subject = new Subject($db);
 $user = new User($db);
 
+$subject_item = [];
+$d = [];
+
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
 
@@ -36,30 +39,26 @@ if(!empty($data)){
             $stmtu = $user->readOneById();
             $numu = $stmtu->rowCount();
             
-            $subject_item->id = $id;
-            $subject_item->subject_id = $subject_id;
-            $subject_item->subject_name = $subject_name;
-            $subject_item->level = $level;
-            $subject_item->acad_year = $acad_year;
-            $subject_item->grade_year = $grade_year;
-            
-            if($numu > 0){
-                while ($rowu = $stmtu->fetch(PDO::FETCH_ASSOC)){
-                    
-                    extract($rowu);
-                    $d->id = $id;
-                    $d->user_id = $user_id;
-                    $d->name = $first_name . ' ' . $last_name;   
-                }
+            $subject_item["id"] = $id;
+            $subject_item["subject_id"] = $subject_id;
+            $subject_item["subject_name"] = $subject_name;
+            $subject_item["level"] = $level;
+            $subject_item["acad_year"] = $acad_year;
+            $subject_item["grade_year"] = $grade_year;
 
-                $subject_item->assigned_teacher = $d;
+            while ($rowu = $stmtu->fetch(PDO::FETCH_ASSOC)){
+                
+                extract($rowu);
+                $d["id"] = $id;
+                $d["user_id"] = $user_id;
+                $d["name"] = $first_name . ' ' . $last_name;   
+            }
 
-                  
-
-                http_response_code(200);
-                echo json_encode(array("code" => "Ok", "message" => "Records fetched", "data" => $subject_item));
-            } 
+            $subject_item["assigned_teacher"] = $d;
         }
+
+        http_response_code(200);
+        echo json_encode(array("code" => "Ok", "message" => "Record fetched", "data" => $subject_item));
     } else {
         http_response_code(404);
         echo json_encode(array("code" => "Error", "message" => "Subject does not exists"));

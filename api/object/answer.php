@@ -15,14 +15,15 @@ class Answer{
 
     function createQuestionAnswers(){
         $q = "INSERT INTO
-                " . $this->table_name . " (answer_id, question_id, seq_no, answer_text, is_correct) 
-                VALUES (:answer_id, :question_id, :seq_no, :answer_text, :is_correct) ";
+                " . $this->table_name . " (answer_id, exam_id, question_id, seq_no, answer_text, is_correct) 
+                VALUES (:answer_id, :exam_id, :question_id, :seq_no, :answer_text, :is_correct) ";
   
         // prepare query
         $stmt = $this->conn->prepare($q);
         
         // bind values
         $stmt->bindParam(":answer_id", $this->answer_id);
+        $stmt->bindParam(":exam_id", $this->exam_id);
         $stmt->bindParam(":question_id", $this->question_id);
         $stmt->bindParam(":seq_no", $this->seq_no);
         $stmt->bindParam(":answer_text", $this->answer_text);
@@ -30,6 +31,18 @@ class Answer{
         
         $stmt->execute();
         return $stmt; 
+    }
+
+    function getQuestionsPerExam(){
+         // select all query
+         $query = "SELECT * FROM " . $this->table_name . " WHERE exam_id ='" . $this->exam_id . "'";
+    
+         // prepare query statement
+         $stmt = $this->conn->prepare($query);
+ 
+         // execute query
+         $stmt->execute();
+         return $stmt;
     }
 
     function getCorrectAnswer(){
@@ -43,5 +56,7 @@ class Answer{
         $stmt->execute();
         return $stmt;
     }
+
+
 }
 ?>
