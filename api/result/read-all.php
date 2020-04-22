@@ -5,13 +5,11 @@ header("Content-Type: application/json; charset=UTF-8");
 
 // include database and object files
 include_once '../config/database.php';
-include_once '../object/subject.php';
-include_once '../object/user.php';
-
+include_once '../object/answer.php';
+  
+// instantiate database and product object
 $database = new Database();
 $db = $database->getConnection();
-$subject_item = [];
-$d = [];
   
 // initialize object
 $subject = new Subject($db);
@@ -39,21 +37,21 @@ if($num>0){
         $stmtu = $user->readOneById();
         $numu = $stmtu->rowCount();
         
-        $subject_item["id"] = $id;
-        $subject_item["subject_id"] = $subject_id;
-        $subject_item["subject_name"] = $subject_name;
-        $subject_item["level"] = $level;
-        $subject_item["acad_year"] = $acad_year;
-        $subject_item["grade_year"] = $grade_year;
+        $subject_item->id = $id;
+        $subject_item->subject_id = $subject_id;
+        $subject_item->subject_name = $subject_name;
+        $subject_item->level = $level;
+        $subject_item->acad_year = $acad_year;
+        $subject_item->grade_year = $grade_year;
 
         if($numu > 0){
             while ($rowu = $stmtu->fetch(PDO::FETCH_ASSOC)){
                 
                 extract($rowu);
-                $d["id"] = $id;
-                $d["user_id"] = $user_id;
-                $d["name"] = $first_name . ' ' . $last_name;
-                $subject_item["assigned_teacher"] = $d;
+                $d->id = $id;
+                $d->user_id = $user_id;
+                $d->name = $first_name . ' ' . $last_name;
+                $subject_item->assigned_teacher = $d;
                 array_push($subjects_arr["records"], $subject_item);
                
             }

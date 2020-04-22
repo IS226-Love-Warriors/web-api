@@ -4,15 +4,6 @@ class Subject{
     // database connection and table name
     private $conn;
     private $table_name = "subjects";
-  
-    // object properties
-    public $id;
-    public $subject_id;
-    public $subject_name;
-    public $level;
-    public $grade_year;
-    public $acad_year;
-    public $assigned_teacher;
 
     // constructor with $db as database connection
     public function __construct($db){
@@ -34,26 +25,16 @@ class Subject{
     }
 
     function readByLevel(){
-        // select all query
         $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year='" . $this->grade_year . "'";
-    
-        // prepare query statement
         $stmt = $this->conn->prepare($query);
-
-        // execute query
         $stmt->execute();
         return $stmt;
     }
 
        //get one record
        function readBySubjId(){
-        // select all query
         $query = "SELECT * FROM " . $this->table_name . " WHERE subject_id='" . $this->subject_id . "'";
-    
-        // prepare query statement
         $stmt = $this->conn->prepare($query);
-
-        // execute query
         $stmt->execute();
         return $stmt;
     }
