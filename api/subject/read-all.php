@@ -47,19 +47,17 @@ if($num>0){
         $subject_item["grade_year"] = $grade_year;
 
         while ($rowu = $stmtu->fetch(PDO::FETCH_ASSOC)){
-            
             extract($rowu);
             $d["id"] = $id;
             $d["user_id"] = $user_id;
             $d["name"] = $first_name . ' ' . $last_name;
             $subject_item["assigned_teacher"] = $d;
-            array_push($subjects_arr["records"], $subject_item);
-            
+            array_push($subjects_arr["records"], $subject_item);   
         }
-
-        http_response_code(200);
-        echo json_encode(array("code" => "Ok", "message" => "Records fetched", "data" => $subjects_arr));
     }
+
+    http_response_code(200);
+    echo json_encode(array("code" => "Ok", "message" => "Records fetched", "data" => $subjects_arr));
 
 } else{
   
