@@ -57,6 +57,17 @@ class Answer{
         return $stmt;
     }
 
+    function getChoicesPerQuestion(){
+        // select all query
+        $query = "SELECT * FROM " . $this->table_name . " WHERE answer_id ='" . $this->answer_id . "'" ;
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
 
 }
 ?>

@@ -35,5 +35,18 @@ class Result{
         return $stmt;
         
     }
+
+        // read users
+        function readByStudentAndExam(){
+            // select all query
+            $query = "SELECT * FROM " . $this->table_name . " WHERE student_id='" . $this->student_id . "' AND exam_id='" .$this->exam_id . "'";
+        
+            // prepare query statement
+            $stmt = $this->conn->prepare($query);
+        
+            // execute query
+            $stmt->execute();
+            return $stmt;
+        }
 }
 ?>
