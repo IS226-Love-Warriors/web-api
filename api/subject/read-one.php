@@ -34,10 +34,8 @@ if(!empty($data)){
     if($num > 0){
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             extract($row);
-
             $user->user_id =$assigned_teacher;
             $stmtu = $user->readOneById();
-            $numu = $stmtu->rowCount();
             
             $subject_item["id"] = $id;
             $subject_item["subject_id"] = $subject_id;
@@ -47,14 +45,13 @@ if(!empty($data)){
             $subject_item["grade_year"] = $grade_year;
 
             while ($rowu = $stmtu->fetch(PDO::FETCH_ASSOC)){
-                
                 extract($rowu);
                 $d["id"] = $id;
                 $d["user_id"] = $user_id;
                 $d["name"] = $first_name . ' ' . $last_name;   
             }
-
             $subject_item["assigned_teacher"] = $d;
+
         }
 
         http_response_code(200);

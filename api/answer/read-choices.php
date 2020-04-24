@@ -48,11 +48,10 @@ if($num > 0){
             }
 
         $question_item=array(
-            "answer_id" => $answer_id,
+            "choice_id" => $answer_id,
             "question" => $quest_arr,
-            "answer_text" => $answer_text,
-            "seq_no" => $seq_no,
-            "is_correct" => $is_correct
+            "choice_text" => $answer_text,
+            "seq_no" => $seq_no
         );
         array_push($questions_arr["records"], $question_item);
     }

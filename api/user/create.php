@@ -65,9 +65,7 @@ $data = json_decode(file_get_contents("php://input"));
                 $subj_stmt = $subject->readByLevel();
                 $subj_num = $subj_stmt->rowCount();
                 if($subj_num <= 0){
-                    // set response code - 503 service unavailable
                     http_response_code(404);
-                    // tell the user
                     echo json_encode(array("message" => "No available subjects yet."));
                 }
                 else{
@@ -78,7 +76,10 @@ $data = json_decode(file_get_contents("php://input"));
                             $subject_student_grade->student_id = $user->user_id;
                             $subject_student_grade->subject_id = $subject_id;
                             $subject_student_grade->grading_period = $x;
-                            $subject_student_grade->final_grade = $final_grade;
+                            $subject_student_grade->criteria_name = $criteria_name;
+                            $subject_student_grade->score = 0;
+                            $subject_student_grade->percentage = $percentage;
+                            $subject_student_grade->score_equivalent = 0;
                             $subject_student_grade->ssgCreate();
                         }
                     }
