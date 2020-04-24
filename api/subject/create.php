@@ -18,15 +18,13 @@ $db = $database->getConnection();
 // initialize object
 $subject = new Subject($db);
 $user = new User($db);
+$teacher = [];
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
     // make sure data is not empty
     if(!empty($data)){
-    
     $subject->subject_id = uniqid('subject_');
-    
-
     for($x = 0; $x < count($data->criteria); $x++){
         $subject->subject_name = $data->subject_name;
         $subject->level = $data->level;
@@ -38,34 +36,20 @@ $data = json_decode(file_get_contents("php://input"));
         $subject->create();
     }
 
-    // create the user
-    if($subject->create()){
-        $user->user_id =$data->assigned_teacher;
-        $stmtu = $user->readOneById();
-        $numu = $stmtu->rowCount();
+    $user->user_id =$data->assigned_teacher;
+    $stmtu = $user->readOneById();
+    $numu = $stmtu->rowCount();
 
-        while ($rowu = $stmtu->fetch(PDO::FETCH_ASSOC)){
-                
-            extract($rowu);
-            $d->id = $id;
-            $d->user_id = $user_id;
-            $d->name = $first_name . ' ' . $last_name;
-
-            $subject->assigned_teacher = $d;
-           
-        }
-
-        // set response code - 201 created
+    while ($rowu = $stmtu->fetch(PDO::FETCH_ASSOC)){
+        extract($rowu);
+        $teacher["id"] = $id;
+        $teacher["user_id"] = $user_id;
+        $teacher["name"] = $first_name . ' ' . $last_name;   
+    }
+        unset($data->assigned_teacher);
+        $data->assigned_teacher = $teacher;
         http_response_code(201);
-        // tell the subject
-        echo json_encode(array("message" => "Subject was created.", "data" => $subject));
-    }
-  
-    // if unable to create the subject, tell the subject
-    else{
-        http_response_code(503);
-        echo json_encode(array("message" => "Unable to create subject."));
-    }
+        echo json_encode(array("message" => "Subject was created.", "data" => $data));
 }
   
 // tell the subject data is incomplete

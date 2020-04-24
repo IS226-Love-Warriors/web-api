@@ -53,8 +53,8 @@ class Subject{
         $stmt->bindParam(":level", $this->level);
         $stmt->bindParam(":grade_year", $this->grade_year);
         $stmt->bindParam(":acad_year", $this->acad_year);
-        $stmt->bindParam(":criteria_name", $this->criteria_id);
-        $stmt->bindParam(":percentage", $this->criteria_id);
+        $stmt->bindParam(":criteria_name", $this->criteria_name);
+        $stmt->bindParam(":percentage", $this->percentage);
         $stmt->bindParam(":assigned_teacher", $this->assigned_teacher);
         
         $stmt->execute();
