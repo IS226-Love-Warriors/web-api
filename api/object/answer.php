@@ -45,6 +45,18 @@ class Answer{
          return $stmt;
     }
 
+    function getChoicesPerQuestionId(){
+        // select all query
+        $query = "SELECT * FROM " . $this->table_name . " WHERE question_id ='" . $this->question_id . "'";
+   
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+        return $stmt;
+   }
+
     function getCorrectAnswer(){
         // select all query
         $query = "SELECT * FROM " . $this->table_name . " WHERE question_id ='" . $this->question_id . "' AND is_correct = 1" ;
