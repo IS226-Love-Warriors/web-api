@@ -14,24 +14,36 @@ class Criteria{
 
     function createCriteria(){
         $q = "INSERT INTO
-                " . $this->table_name . " (criteria_id, criteria_text, percentage) 
-                VALUES (:criteria_id, :criteria_text, :percentage) ";
+                " . $this->table_name . " (criteria_id, criteria_name, criteria_item, percentage) 
+                VALUES (:criteria_id, :criteria_name, :criteria_item, :percentage) ";
   
         // prepare query
         $stmt = $this->conn->prepare($q);
         
         // bind values
-        $stmt->bindParam(":criteria_id", $this->ancriteria_idswer_id);
-        $stmt->bindParam(":criteria_text", $this->criteria_text);
+        $stmt->bindParam(":criteria_id", $this->criteria_id);
+        $stmt->bindParam(":criteria_name", $this->criteria_name);
+        $stmt->bindParam(":criteria_item", $this->criteria_item);
         $stmt->bindParam(":percentage", $this->percentage);
-        
         $stmt->execute();
         return $stmt; 
     }
 
-    function read(){
-        // select all query
-        $query = "SELECT * FROM " . $this->table_name . "";
+    function readLast(){
+        $query = "SELECT * FROM " . $this->table_name . " ORDER BY ID DESC LIMIT 1";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
+    function readAll(){
+        //SELECT DISTINCT Country FROM Customers;
+        $query = "SELECT DISTINCT criteria_id, criteria_name FROM " . $this->table_name;
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);

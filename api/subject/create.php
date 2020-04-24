@@ -29,6 +29,7 @@ $data = json_decode(file_get_contents("php://input"));
     $subject->level = $data->level;
     $subject->grade_year = $data->grade_year;
     $subject->acad_year = $data->acad_year;
+    $subject->criteria_id = $data->criteria_id;
     $subject->assigned_teacher = $data->assigned_teacher;
 
     // create the user
