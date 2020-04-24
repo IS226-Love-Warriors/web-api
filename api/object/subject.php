@@ -41,8 +41,8 @@ class Subject{
     // create product
     function create(){
         $q = "INSERT INTO
-                " . $this->table_name . " (subject_id, subject_name, grade_year, level, acad_year, criteria_id, assigned_teacher) 
-                VALUES (:subject_id, :subject_name, :grade_year, :level, :acad_year, :criteria_id, :assigned_teacher) ";
+                " . $this->table_name . " (subject_id, subject_name, grade_year, level, acad_year, criteria_name, percentage, assigned_teacher) 
+                VALUES (:subject_id, :subject_name, :grade_year, :level, :acad_year, :criteria_name, :percentage, :assigned_teacher) ";
   
         // prepare query
         $stmt = $this->conn->prepare($q);
@@ -53,7 +53,8 @@ class Subject{
         $stmt->bindParam(":level", $this->level);
         $stmt->bindParam(":grade_year", $this->grade_year);
         $stmt->bindParam(":acad_year", $this->acad_year);
-        $stmt->bindParam(":criteria_id", $this->criteria_id);
+        $stmt->bindParam(":criteria_name", $this->criteria_id);
+        $stmt->bindParam(":percentage", $this->criteria_id);
         $stmt->bindParam(":assigned_teacher", $this->assigned_teacher);
         
         $stmt->execute();

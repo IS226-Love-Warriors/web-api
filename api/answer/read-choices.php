@@ -22,15 +22,14 @@ $questions->exam_id = $data->exam_id;
 $stmt = $questions->getQuestionsPerExam();
 $num = $stmt->rowCount();
 
-if($num > 0){
-    $questions_arr=array();
-    $quest_arr=array();
-    $exam_arr=array();
+$questions_arr=array();
+$questions_arr["records"]=array();
+$quest_arr=array();
+$exam_arr=array();
 
+if($num > 0){
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         extract($row);
-        $question_item["answer_id"] = $answer_id;
-
             $questionText->question_id = $question_id;
             $result = $questionText->readByQuestionId();
             while($result_row = $result->fetch(PDO::FETCH_ASSOC)){
@@ -45,22 +44,34 @@ if($num > 0){
                 extract($examination_row);
                 $exam_arr["exam_id"] = $exam_id;
                 $exam_arr["exam_text"] = $exam_desc;
+                $exam_arr["exam_date"] = $exam_date;
             }
 
-        $question_item["examination"] = $exam_arr;
-        $question_item["question"] = $quest_arr;        
-        $question_item["answer_text"] = $answer_text;
-        $question_item["seq_no"] = $seq_no;
-        $question_item["is_correct"] = $is_correct;
-        array_push($questions_arr, $question_item);
+        $question_item=array(
+            "answer_id" => $answer_id,
+            "question" => $quest_arr,
+            "answer_text" => $answer_text,
+            "seq_no" => $seq_no,
+            "is_correct" => $is_correct
+        );
+        array_push($questions_arr["records"], $question_item);
     }
+    $questions_arr["exam_details"] = $exam_arr;
 
     http_response_code(200);
-    echo json_encode(array("code" => "Ok", "message" => "Record fetched","data" => $questions_arr));
+    echo json_encode(array("code" => "Ok", "message" => "Record fetched","data" => $questions_arr ));
 }
 else{
+    $examination->exam_id = $data->exam_id;
+    $examination_result = $examination->readByExaminationId();
+    while($examination_row = $examination_result->fetch(PDO::FETCH_ASSOC)){
+        extract($examination_row);
+        $exam_arr["exam_id"] = $exam_id;
+        $exam_arr["exam_text"] = $exam_desc;
+        $exam_arr["exam_date"] = $exam_date;
+    }
     http_response_code(200);
-    echo json_encode(array("code" => "Conflict", "message" => "No record found", "data"=>"{}"));
+    echo json_encode(array("code" => "Conflict", "message" => "No record found", "data"=>$exam_arr));
 }
 
 

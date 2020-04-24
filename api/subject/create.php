@@ -23,14 +23,20 @@ $user = new User($db);
 $data = json_decode(file_get_contents("php://input"));
     // make sure data is not empty
     if(!empty($data)){
-    // set user property values
+    
     $subject->subject_id = uniqid('subject_');
-    $subject->subject_name = $data->subject_name;
-    $subject->level = $data->level;
-    $subject->grade_year = $data->grade_year;
-    $subject->acad_year = $data->acad_year;
-    $subject->criteria_id = $data->criteria_id;
-    $subject->assigned_teacher = $data->assigned_teacher;
+    
+
+    for($x = 0; $x < count($data->criteria); $x++){
+        $subject->subject_name = $data->subject_name;
+        $subject->level = $data->level;
+        $subject->grade_year = $data->grade_year;
+        $subject->acad_year = $data->acad_year;
+        $subject->criteria_name = $data->criteria[$x]->criteria_name;
+        $subject->percentage = $data->criteria[$x]->percentage;
+        $subject->assigned_teacher = $data->assigned_teacher;
+        $subject->create();
+    }
 
     // create the user
     if($subject->create()){
