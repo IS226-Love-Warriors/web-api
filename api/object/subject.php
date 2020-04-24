@@ -10,7 +10,6 @@ class Subject{
         $this->conn = $db;
     }
 
-    // read products
     function read(){
         // select all query
         $query = "SELECT * FROM " . $this->table_name . "";
