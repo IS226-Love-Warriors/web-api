@@ -70,8 +70,9 @@ else{
         $exam_arr["exam_text"] = $exam_desc;
         $exam_arr["exam_date"] = $exam_date;
     }
+    $questions_arr["exam_details"] = $exam_arr;
     http_response_code(200);
-    echo json_encode(array("code" => "Conflict", "message" => "No record found", "data"=>$exam_arr));
+    echo json_encode(array("code" => "Conflict", "message" => "No record found", "data"=>$questions_arr));
 }
 
 
