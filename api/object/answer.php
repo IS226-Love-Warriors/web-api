@@ -13,6 +13,18 @@ class Answer{
         $this->conn = $db;
     }
 
+    function readLast(){
+        $query = "SELECT * FROM " . $this->table_name . " ORDER BY ID DESC LIMIT 1";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
     function createQuestionAnswers(){
         $q = "INSERT INTO
                 " . $this->table_name . " (answer_id, exam_id, question_id, seq_no, answer_text, is_correct) 

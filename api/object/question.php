@@ -14,6 +14,18 @@ class Question{
         $this->conn = $db;
     }
 
+    function readLast(){
+        $query = "SELECT * FROM " . $this->table_name . " ORDER BY ID DESC LIMIT 1";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
     function readByExamId(){
         // select all query
         $query = "SELECT * FROM " . $this->table_name . " WHERE exam_id='" . $this->exam_id . "'";
