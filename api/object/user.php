@@ -59,6 +59,25 @@ class User{
         return $stmt;
     }
 
+    function readByYearLevel(){
+        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year_level='" . $this->grade_year . "'";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function readByGradeLevel(){
+        // select all query
+        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year_level='" . $this->grade_year_level . "'";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
+
     // create product
     function userCreate(){
         $q = "INSERT INTO

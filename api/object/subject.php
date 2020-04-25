@@ -24,15 +24,22 @@ class Subject{
     }
 
     function readByLevel(){
-        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year='" . $this->grade_year . "'";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year_level='" . $this->grade_year . "'";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
     }
 
        //get one record
-       function readBySubjId(){
-        $query = "SELECT * FROM " . $this->table_name . " WHERE subject_id='" . $this->subject_id . "'";
+    function readBySubjId(){
+        $query = "SELECT * FROM SUBJECTS join USERS on SUBJECTS.`assigned_teacher` = USERS.`user_id` WHERE SUBJECTS.`subject_id` = '" . $this->subject_id . "'";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function readDistinctBySubjId(){
+        $query = "SELECT DISTINCT subject_id, subject_name FROM " . $this->table_name . " WHERE subject_id='" . $this->subject_id . "'";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;

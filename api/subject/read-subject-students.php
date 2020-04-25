@@ -24,7 +24,7 @@ $d = [];
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
-$subject_item["enrolled_students"] = array();
+
 if(!empty($data)){
     $subject->subject_id = $data->subject_id;
 
@@ -34,27 +34,26 @@ if(!empty($data)){
     if($num > 0){
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             extract($row);
+            $user->user_id =$assigned_teacher;
+            $stmtu = $user->readOneById();
+            
             $subject_item["id"] = $id;
             $subject_item["subject_id"] = $subject_id;
             $subject_item["subject_name"] = $subject_name;
             $subject_item["level"] = $level;
-            $subject_item["acad_year"] = "2019 - 2020";
+            $subject_item["acad_year"] = $acad_year;
             $subject_item["grade_year"] = $grade_year;
-            $subject_item["assigned_teacher"]["user_id"]= $user_id;
-            $subject_item["assigned_teacher"]["name"] = $first_name . " " . $last_name;
+
+            while ($rowu = $stmtu->fetch(PDO::FETCH_ASSOC)){
+                extract($rowu);
+                $d["id"] = $id;
+                $d["user_id"] = $user_id;
+                $d["name"] = $first_name . ' ' . $last_name;   
+            }
+            $subject_item["assigned_teacher"] = $d;
+
         }
 
-        $user->grade_year = $subject_item["grade_year"];
-        $stud_stmt = $user->readByYearLevel();
-        while ($stud_row = $stud_stmt->fetch(PDO::FETCH_ASSOC)){
-            extract($stud_row);
-            $student_item = array(
-                "user_id" => $user_id,
-                "name" => $first_name . " " . $last_name
-            );
-            array_push($subject_item["enrolled_students"], $student_item);
-        }
-        
         http_response_code(200);
         echo json_encode(array("code" => "Ok", "message" => "Record fetched", "data" => $subject_item));
     } else {
