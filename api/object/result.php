@@ -36,17 +36,29 @@ class Result{
         
     }
 
-        // read users
-        function readByStudentAndExam(){
-            // select all query
-            $query = "SELECT * FROM " . $this->table_name . " WHERE student_id='" . $this->student_id . "' AND exam_id='" .$this->exam_id . "'";
-        
-            // prepare query statement
-            $stmt = $this->conn->prepare($query);
-        
-            // execute query
-            $stmt->execute();
-            return $stmt;
-        }
+    function readByStudentAndExam(){
+        // select all query
+        $query = "SELECT * FROM " . $this->table_name . " WHERE student_id='" . $this->student_id . "' AND exam_id='" .$this->exam_id . "'";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
+
+    //
+    function readExamCriteria(){
+        // select all query
+        $query = "SELECT * FROM EXAMINATIONS join CRITERIA on EXAMINATIONS.`criteria_id` = CRITERIA.`criteria_id` WHERE EXAMINATIONS.`exam_id`='" . $this->exam_id . "'";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
 }
 ?>

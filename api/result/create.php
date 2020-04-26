@@ -10,6 +10,8 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../config/database.php';
 include_once '../object/result.php';
 include_once '../object/answer.php';
+include_once '../object/student_subject_grade.php';
+
 
 // instantiate database and product object
 $database = new Database();
@@ -18,6 +20,7 @@ $db = $database->getConnection();
 // initialize object
 $results = new Result($db);
 $answers = new Answer($db);
+$grades = new StudentSubjectGrade($db);
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
@@ -36,19 +39,37 @@ $data = json_decode(file_get_contents("php://input"));
         $stmts = $answers->getCorrectAnswer();
         $nums = $stmts->rowCount();
 
+        $score = 0;
+        $items = 0;
         while ($row = $stmts->fetch(PDO::FETCH_ASSOC)){
             extract($row);
             $results->answer_id = $answer_id;
             if($data->answers[$x]->stud_answer_id == $answer_id){
                 $results->is_correct = 1;
+                $score = $score + 1;
             }
             else{
                 $results->is_correct = 0;
             } 
+
+            $items = $items + 1;
         }
         $results->createQuestionAnswers();
     }
-
+        $results->exam_id = $data->exam_id;
+        $result_stmt =  $results->readExamCriteria();
+        while ($result_row = $result_stmt->fetch(PDO::FETCH_ASSOC)){
+            extract($result_row);
+            $grades->student_id = $data->student_id;
+            $grades->subject_id = $subject_id;
+            $grades->grading_period = $grading_period;
+            $grades->criteria_id = $criteria_id;
+            $grades->criteria_name = $criteria_name;
+            $grades->score = $score;
+            $grades->percentage = $percentage;
+            $grades->score_equivalent =  (($score / $items) * 100) * ($percentage/100);
+            $grades->ssgCreate();
+        }
         http_response_code(201);
         echo json_encode(array("code"=>"Ok", "message" => "Item added.", "data" => $results));
 

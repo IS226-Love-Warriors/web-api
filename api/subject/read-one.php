@@ -64,7 +64,8 @@ if(!empty($data)){
             extract($criteria_row);
             $criteria_item = array(
                 "criteria_id" => $criteria_id,
-                "criteria_name" => $criteria_name
+                "criteria_name" => $criteria_name,
+                "percentage" => $percentage
             );
             array_push($subject_item["criterias"], $criteria_item);
         }

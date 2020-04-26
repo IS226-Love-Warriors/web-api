@@ -46,8 +46,8 @@ class StudentSubjectGrade{
     // create student_subject_grade
     function ssgCreate(){
         $q = "INSERT INTO
-                " . $this->table_name . " (student_id, subject_id, grading_period, criteria_name, score, percentage, score_equivalent) 
-                VALUES (:student_id, :subject_id, :grading_period, :criteria_name, :score, :percentage, :score_equivalent) ";
+                " . $this->table_name . " (student_id, subject_id, grading_period, criteria_id, criteria_name, score, percentage, score_equivalent) 
+                VALUES (:student_id, :subject_id, :grading_period, :criteria_id, :criteria_name, :score, :percentage, :score_equivalent) ";
   
         // prepare query
         $stmt = $this->conn->prepare($q);
@@ -56,6 +56,7 @@ class StudentSubjectGrade{
         $stmt->bindParam(":student_id", $this->student_id);
         $stmt->bindParam(":subject_id", $this->subject_id);
         $stmt->bindParam(":grading_period", $this->grading_period);
+        $stmt->bindParam(":criteria_id", $this->criteria_id);
         $stmt->bindParam(":criteria_name", $this->criteria_name);
         $stmt->bindParam(":score", $this->score);
         $stmt->bindParam(":percentage", $this->percentage);
