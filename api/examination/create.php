@@ -27,6 +27,7 @@ $data = json_decode(file_get_contents("php://input"));
     $exams->subject_id = $data->subject_id;
     $exams->exam_date = $data->exam_date;
     $exams->exam_desc = $data->exam_desc;
+    $exams->criteria_id = $data->criteria_id;
 
     // create the user
     if($exams->createExam()){
