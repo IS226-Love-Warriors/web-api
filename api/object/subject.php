@@ -24,7 +24,7 @@ class Subject{
     }
 
     function readByLevel(){
-        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year_level='" . $this->grade_year . "'";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year='" . $this->grade_year . "'";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
