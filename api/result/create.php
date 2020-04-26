@@ -70,8 +70,13 @@ $data = json_decode(file_get_contents("php://input"));
             $grades->score_equivalent =  (($score / $items) * 100) * ($percentage/100);
             $grades->ssgCreate();
         }
+
+        $response["exam_id"] = $data->exam_id;
+        $response["score"] = $score . "/" . $items;
+        $response["percentage"] = (($score / $items) * 100) . "%";
+
         http_response_code(201);
-        echo json_encode(array("code"=>"Ok", "message" => "Item added.", "data" => $results));
+        echo json_encode(array("code"=>"Ok", "message" => "Item added.", "data" => $response));
 
 }
 // tell the exam data is incomplete
