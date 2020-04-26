@@ -33,7 +33,7 @@ $data = json_decode(file_get_contents("php://input"));
         $results->exam_id = $data->exam_id;
         $results->question_id = $data->answers[$x]->question_id;
         $results->seq_no = $data->answers[$x]->seq_no;
-        $results->stud_answer_id = $data->answers[$x]->stud_answer_id;
+        $results->stud_answer_text = $data->answers[$x]->stud_answer_text;
 
         $answers->question_id = $data->answers[$x]->question_id;
         $stmts = $answers->getCorrectAnswer();
@@ -43,8 +43,8 @@ $data = json_decode(file_get_contents("php://input"));
         $items = 0;
         while ($row = $stmts->fetch(PDO::FETCH_ASSOC)){
             extract($row);
-            $results->answer_id = $answer_id;
-            if($data->answers[$x]->stud_answer_id == $answer_id){
+            $results->correct_answer_text = $answer_text;
+            if($data->answers[$x]->stud_answer_text == $answer_text){
                 $results->is_correct = 1;
                 $score = $score + 1;
             }

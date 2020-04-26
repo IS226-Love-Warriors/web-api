@@ -15,8 +15,8 @@ class Result{
 
     function createQuestionAnswers(){
         $q = "INSERT INTO
-                " . $this->table_name . " (result_id, student_id, exam_id, question_id, seq_no, stud_answer_id, answer_id, is_correct) 
-                VALUES (:result_id, :student_id, :exam_id, :question_id, :seq_no, :stud_answer_id, :answer_id, :is_correct) ";
+                " . $this->table_name . " (result_id, student_id, exam_id, question_id, seq_no, stud_answer_text, correct_answer_text, is_correct) 
+                VALUES (:result_id, :student_id, :exam_id, :question_id, :seq_no, :stud_answer_text, :correct_answer_text, :is_correct) ";
   
         // prepare query
         $stmt = $this->conn->prepare($q);
@@ -27,8 +27,8 @@ class Result{
         $stmt->bindParam(":exam_id", $this->exam_id);
         $stmt->bindParam(":question_id", $this->question_id);
         $stmt->bindParam(":seq_no", $this->seq_no);
-        $stmt->bindParam(":stud_answer_id", $this->stud_answer_id);
-        $stmt->bindParam(":answer_id", $this->answer_id);
+        $stmt->bindParam(":stud_answer_text", $this->stud_answer_text);
+        $stmt->bindParam(":correct_answer_text", $this->correct_answer_text);
         $stmt->bindParam(":is_correct", $this->is_correct);
         
         $stmt->execute();
