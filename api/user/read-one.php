@@ -30,17 +30,19 @@ if(!empty($data)){
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             extract($row);
             if($account_type != 3){
-                $d->email = $email;
-                $d->account_type = $account_type;
-                $d->first_name = $first_name;
-                $d->last_name=$last_name;
+                $d["user_id"] = $user_id;
+                $d["email"] = $email;
+                $d["account_type"] = $account_type;
+                $d["first_name"] = $first_name;
+                $d["last_name"] = $last_name;
             } else {
-                $d->email = $email;
-                $d->account_type = $account_type;
-                $d->first_name = $first_name;
-                $d->last_name = $last_name;
-                $d->grade_year_level = $grade_year_level;
-                $d->acad_year = $acad_year;             
+                $d["user_id"] = $user_id;
+                $d["email"] = $email;
+                $d["account_type"] = $account_type;
+                $d["first_name"] = $first_name;
+                $d["last_name"] = $last_name;
+                $d["grade_year_level"] = $grade_year_level;
+                $d["acad_year"] = $acad_year;             
             }
 
             http_response_code(200);
