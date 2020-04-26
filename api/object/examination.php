@@ -16,8 +16,8 @@ class Examination{
     // create product
     function createExam(){
         $q = "INSERT INTO
-                " . $this->table_name . " (grading_period, exam_id, subject_id, exam_date, exam_desc) 
-                VALUES (:grading_period, :exam_id, :subject_id, :exam_date, :exam_desc) ";
+                " . $this->table_name . " (grading_period, exam_id, subject_id, exam_date, exam_desc, criteria_id) 
+                VALUES (:grading_period, :exam_id, :subject_id, :exam_date, :exam_desc, :criteria_id) ";
   
         // prepare query
         $stmt = $this->conn->prepare($q);
@@ -28,6 +28,7 @@ class Examination{
         $stmt->bindParam(":subject_id", $this->subject_id);
         $stmt->bindParam(":exam_date", $this->exam_date);
         $stmt->bindParam(":exam_desc", $this->exam_desc);
+        $stmt->bindParam(":criteria_id", $this->criteria_id);
         
         $stmt->execute();
         return $stmt;

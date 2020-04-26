@@ -32,7 +32,7 @@ if(!empty($data)){
             extract($row);
             if($enteredPass == $password){
                 
-                $data->id = $id;
+                $data->id = $user_id;
                 $data->email = $email;
                 $data->account_type = $account_type;
                 $data->first_name = $first_name;

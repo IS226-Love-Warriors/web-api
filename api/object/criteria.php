@@ -14,16 +14,16 @@ class Criteria{
 
     function createCriteria(){
         $q = "INSERT INTO
-                " . $this->table_name . " (criteria_id, criteria_name, criteria_item, percentage) 
-                VALUES (:criteria_id, :criteria_name, :criteria_item, :percentage) ";
+                " . $this->table_name . " (subject_id, criteria_id, criteria_name, percentage) 
+                VALUES (:subject_id, :criteria_id, :criteria_name, :percentage) ";
   
         // prepare query
         $stmt = $this->conn->prepare($q);
         
         // bind values
+        $stmt->bindParam(":subject_id", $this->subject_id);
         $stmt->bindParam(":criteria_id", $this->criteria_id);
         $stmt->bindParam(":criteria_name", $this->criteria_name);
-        $stmt->bindParam(":criteria_item", $this->criteria_item);
         $stmt->bindParam(":percentage", $this->percentage);
         $stmt->execute();
         return $stmt; 
