@@ -41,6 +41,17 @@ class Criteria{
         return $stmt;
     }
 
+    function readBySubjectId(){
+        $query = "SELECT * FROM " . $this->table_name . " WHERE subject_id='" . $this->subject_id . "'";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
+
     function readAll(){
         //SELECT DISTINCT Country FROM Customers;
         $query = "SELECT DISTINCT criteria_id, criteria_name FROM " . $this->table_name;

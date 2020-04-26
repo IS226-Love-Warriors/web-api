@@ -10,6 +10,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../config/database.php';
 include_once '../object/subject.php';
 include_once '../object/user.php';
+include_once '../object/criteria.php';
 
 // instantiate database and product object
 $database = new Database();
@@ -18,6 +19,7 @@ $db = $database->getConnection();
 // initialize object
 $subject = new Subject($db);
 $user = new User($db);
+$criteria = new Criteria($db);
 
 $subject_item = [];
 $d = [];
@@ -25,6 +27,7 @@ $d = [];
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
 $subject_item["enrolled_students"] = array();
+$subject_item["criterias"] = array();
 if(!empty($data)){
     $subject->subject_id = $data->subject_id;
 
@@ -54,6 +57,18 @@ if(!empty($data)){
             );
             array_push($subject_item["enrolled_students"], $student_item);
         }
+
+        $criteria->subject_id = $data->subject_id;
+        $criteria_stmt = $criteria->readBySubjectId();
+        while ($criteria_row = $criteria_stmt->fetch(PDO::FETCH_ASSOC)){
+            extract($criteria_row);
+            $criteria_item = array(
+                "criteria_id" => $criteria_id,
+                "criteria_name" => $criteria_name
+            );
+            array_push($subject_item["criterias"], $criteria_item);
+        }
+
         
         http_response_code(200);
         echo json_encode(array("code" => "Ok", "message" => "Record fetched", "data" => $subject_item));
