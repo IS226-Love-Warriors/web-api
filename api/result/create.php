@@ -26,57 +26,89 @@ $grades = new StudentSubjectGrade($db);
 $data = json_decode(file_get_contents("php://input"));
     // make sure data is not empty
     if(!empty($data)){
+    $score = 0;
+    $items = 0;
     // set question property values
-    for($x = 0; $x < count($data->answers); $x++){
-        $results->result_id = uniqid('result_');
-        $results->student_id = $data->student_id;
-        $results->exam_id = $data->exam_id;
-        $results->question_id = $data->answers[$x]->question_id;
-        $results->seq_no = $data->answers[$x]->seq_no;
-        $results->stud_answer_text = $data->answers[$x]->stud_answer_text;
+    $results->student_id = $data->student_id;
+    $results->exam_id = $data->exam_id;
+    $results_stmt = $results->readByStudentAndExam();
+    $row_count = $results_stmt->rowCount();
 
-        $answers->question_id = $data->answers[$x]->question_id;
-        $stmts = $answers->getCorrectAnswer();
-        $nums = $stmts->rowCount();
-
-        $score = 0;
-        $items = 0;
-        while ($row = $stmts->fetch(PDO::FETCH_ASSOC)){
-            extract($row);
-            $results->correct_answer_text = $answer_text;
-            if($data->answers[$x]->stud_answer_text == $answer_text){
-                $results->is_correct = 1;
+    if($row_count > 0){
+        while ($answer_row = $results_stmt->fetch(PDO::FETCH_ASSOC)){
+            extract($answer_row);
+            if($is_correct == 1){
                 $score = $score + 1;
+                $items = $items + 1;
+            } else{
+                $items = $items + 1;
             }
-            else{
-                $results->is_correct = 0;
-            } 
-
-            $items = $items + 1;
-        }
-        $results->createQuestionAnswers();
-    }
-        $results->exam_id = $data->exam_id;
-        $result_stmt =  $results->readExamCriteria();
-        while ($result_row = $result_stmt->fetch(PDO::FETCH_ASSOC)){
-            extract($result_row);
-            $grades->student_id = $data->student_id;
-            $grades->subject_id = $subject_id;
-            $grades->grading_period = $grading_period;
-            $grades->criteria_id = $criteria_id;
-            $grades->criteria_name = $criteria_name;
-            $grades->score = $score;
-            $grades->percentage = $percentage;
-            $grades->score_equivalent =  (($score / $items) * 100) * ($percentage/100);
-            $grades->ssgCreate();
         }
 
         $response["exam_id"] = $data->exam_id;
+        if($score == 0){
+            $response["score"] = 0;
+            $response["percentage"] =  "0.00 %";
+        }
         $response["score"] = $score . "/" . $items;
         $response["percentage"] = (($score / $items) * 100) . "%";
 
         http_response_code(201);
-        echo json_encode(array("code"=>"Ok", "message" => "Item added.", "data" => $response));
+        echo json_encode(array("code"=>"Ok", "message" => "Examination cannot be taken twice", "data" => $response));
+    } else{
+        for($x = 0; $x < count($data->answers); $x++){
+            $results->result_id = uniqid('result_');
+            $results->student_id = $data->student_id;
+            $results->exam_id = $data->exam_id;
+            $results->question_id = $data->answers[$x]->question_id;
+            $results->seq_no = $data->answers[$x]->seq_no;
+            $results->stud_answer_text = $data->answers[$x]->stud_answer_text;
+    
+            $answers->question_id = $data->answers[$x]->question_id;
+            $stmts = $answers->getCorrectAnswer();
+            $nums = $stmts->rowCount();
+    
+            while ($row = $stmts->fetch(PDO::FETCH_ASSOC)){
+                extract($row);
+                $results->correct_answer_text = $answer_text;
+                if($data->answers[$x]->stud_answer_text == $answer_text){
+                    $results->is_correct = 1;
+                    $score = $score + 1;
+                }
+                else{
+                    $results->is_correct = 0;
+                } 
+    
+                $items = $items + 1;
+            }
+            $results->createQuestionAnswers();
+        }
+            $results->exam_id = $data->exam_id;
+            $result_stmt =  $results->readExamCriteria();
+            while ($result_row = $result_stmt->fetch(PDO::FETCH_ASSOC)){
+                extract($result_row);
+                $grades->student_id = $data->student_id;
+                $grades->subject_id = $subject_id;
+                $grades->grading_period = $grading_period;
+                $grades->criteria_id = $criteria_id;
+                $grades->criteria_name = $criteria_name;
+                $grades->score = $score;
+                $grades->percentage = $percentage;
+                $grades->score_equivalent =  (($score / $items) * 100) * ($percentage/100);
+                $grades->ssgCreate();
+            }
+    
+            $response["exam_id"] = $data->exam_id;
+            if($score == 0){
+                $response["score"] = 0;
+                $response["percentage"] =  "0.00 %";
+            }
+            $response["score"] = $score . "/" . $items;
+            $response["percentage"] = (($score / $items) * 100) . "%";
+    
+            http_response_code(201);
+            echo json_encode(array("code"=>"Ok", "message" => "Item added.", "data" => $response));
+    }
 
 }
 // tell the exam data is incomplete
