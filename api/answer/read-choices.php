@@ -39,7 +39,8 @@ if($num > 0){
     if($row_count > 0){
         while ($answer_row = $results_stmt->fetch(PDO::FETCH_ASSOC)){
             extract($answer_row);
-            if($is_correct == 1){
+            print_r($answer_row);
+            if($is_correct = 1){
                 $score = $score + 1;
                 $items = $items + 1;
             } else{
@@ -48,7 +49,7 @@ if($num > 0){
         }
 
         $response["exam_id"] = $data->exam_id;
-        if($score == 0){
+        if($score = 0){
             $response["score"] = 0;
             $response["percentage"] =  "0.00 %";
         }
