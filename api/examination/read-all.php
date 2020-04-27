@@ -45,6 +45,7 @@ if($num>0){
                     $user_arr["name"] = $first_name . " " . $last_name;
                 }
                 $exam_item=array(
+                    "grading_period" => $grading_period,
                     "exam_id" => $exam_id,
                     "subject" => $subject_name,
                     "exam_date" => $exam_date,
