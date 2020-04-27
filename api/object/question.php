@@ -26,6 +26,13 @@ class Question{
         return $stmt;
     }
 
+    function readQuestionsAndChoices(){
+        $query = "SELECT * FROM EXAM_ANSWER_CHOICES join EXAMS_QUESTIONS on EXAM_ANSWER_CHOICES.question_id = EXAMS_QUESTIONS.`question_id` WHERE EXAM_ANSWER_CHOICES.`question_id`='" . $this->question_id ."'";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
+
     function readByExamId(){
         // select all query
         $query = "SELECT * FROM " . $this->table_name . " WHERE exam_id='" . $this->exam_id . "'";

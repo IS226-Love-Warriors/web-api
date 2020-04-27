@@ -11,6 +11,7 @@ include_once '../config/database.php';
 include_once '../object/result.php';
 include_once '../object/user.php';
 include_once '../object/examination.php';
+include_once '../object/question.php';
 
 // instantiate database and product object
 $database = new Database();
@@ -20,6 +21,7 @@ $db = $database->getConnection();
 $results = new Result($db); 
 $user = new User($db);
 $exam = new Examination($db);
+$question = new Question($db);
 
 $data = json_decode(file_get_contents("php://input"));
 $result_arr = array();
@@ -33,11 +35,20 @@ if(!empty($data)){
     $result_stmt = $results->readByStudentAndExam();
     while ($result_row = $result_stmt->fetch(PDO::FETCH_ASSOC)){
         extract($result_row);
-        $result_item = array(
-            "question_id"=>$question_id,
-            "stud_answer_text"=>$stud_answer_text,
-            "correct_answer_text"=>$correct_answer_text
-        );
+
+        $question->question_id = $question_id;
+        $question_stmt = $question->readByQuestionId();
+        while ($question_row = $question_stmt->fetch(PDO::FETCH_ASSOC)){
+            extract($question_row);
+            $result_item = array(
+                "question_id"=>$question_id,
+                "question_text" => $question_text,
+                "stud_answer_text"=>$stud_answer_text,
+                "correct_answer_text"=>$correct_answer_text,
+                "is_correct" => $is_correct
+            );
+        }
+        
         array_push($result_arr["exam_details"], $result_item);
         if($is_correct == 1){
             $scores = $scores + 1;
