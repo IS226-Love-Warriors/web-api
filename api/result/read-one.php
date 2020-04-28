@@ -73,6 +73,7 @@ if(!empty($data)){
         extract($exam_row);
         $result_arr["exam_id"] = $data->exam_id;
         $result_arr["exam_desc"] = $exam_desc;
+        $result_arr["exam_date"] = $exam_date;
     }
 
     if($scores == 0){

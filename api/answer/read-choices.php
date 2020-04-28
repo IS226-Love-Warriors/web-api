@@ -39,7 +39,6 @@ if($num > 0){
     if($row_count > 0){
         while ($answer_row = $results_stmt->fetch(PDO::FETCH_ASSOC)){
             extract($answer_row);
-            print_r($answer_row);
             if($is_correct = 1){
                 $score = $score + 1;
                 $items = $items + 1;
