@@ -83,5 +83,32 @@ class StudentSubjectGrade{
         $stmt->execute();
         return $stmt;  
     }
+    function getAllStudent(){
+        $query = "SELECT ssg.student_id, u.first_name, u.last_name
+        FROM student_subject_grade ssg
+        JOIN users u ON ssg.student_id = u.user_id
+        GROUP BY student_id;";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute();
+        return $stmt;
+
+    }
+
+    function getAllStudentWithGradesPerSubject(){
+        $query = "SELECT ssg.student_id,u.first_name, u.last_name, ssg.grading_period, ssg.subject_id, s.subject_name, sum(score_equivalent) as grade 
+        FROM student_subject_grade ssg
+        JOIN users u ON ssg.student_id = u.user_id
+        JOIN subjects s ON ssg.subject_id = s.subject_id
+        WHERE ssg.student_id = '". $this->student_id ."'
+        GROUP BY subject_id, student_id";
+
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute();
+        return $stmt;
+    }
 }
 ?>

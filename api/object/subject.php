@@ -30,6 +30,12 @@ class Subject{
         return $stmt;
     }
 
+    function readByAssignedTeacher(){
+        $query = "SELECT * FROM " . $this->table_name . " WHERE assigned_teacher='" . $this->assigned_teacher . "'";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
        //get one record
     function readBySubjId(){
         $query = "SELECT * FROM SUBJECTS join USERS on SUBJECTS.`assigned_teacher` = USERS.`user_id` WHERE SUBJECTS.`subject_id` = '" . $this->subject_id . "'";
