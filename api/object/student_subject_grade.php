@@ -46,8 +46,8 @@ class StudentSubjectGrade{
     // create student_subject_grade
     function ssgCreate(){
         $q = "INSERT INTO
-                " . $this->table_name . " (student_id, subject_id, grading_period, criteria_id, criteria_name, score, percentage, score_equivalent) 
-                VALUES (:student_id, :subject_id, :grading_period, :criteria_id, :criteria_name, :score, :percentage, :score_equivalent) ";
+                " . $this->table_name . " (student_id, subject_id, grading_period, criteria_id, criteria_name, score, no_of_items, percentage, score_equivalent) 
+                VALUES (:student_id, :subject_id, :grading_period, :criteria_id, :criteria_name, :score, :no_of_items, :percentage, :score_equivalent) ";
   
         // prepare query
         $stmt = $this->conn->prepare($q);
@@ -59,6 +59,7 @@ class StudentSubjectGrade{
         $stmt->bindParam(":criteria_id", $this->criteria_id);
         $stmt->bindParam(":criteria_name", $this->criteria_name);
         $stmt->bindParam(":score", $this->score);
+        $stmt->bindParam(":no_of_items", $this->no_of_items);
         $stmt->bindParam(":percentage", $this->percentage);
         $stmt->bindParam(":score_equivalent", $this->score_equivalent);
         
@@ -69,17 +70,11 @@ class StudentSubjectGrade{
     // update student_subject_grade
     function ssgUpdate(){
         
-        $criteria1 = $this->assignment * 0.35; //times 35%
-        $criteria2 = $this->class_work * 0.15; //times 15%
-        $criteria3 = $this ->labs_projects * 0.25; //times 25%
-        $criteria4 = $this->work_book * 0.25; //times 25%
-        $final_grade = $criteria1 + $criteria2 + $criteria3 + $criteria4;
-
-        $q = "UPDATE " . $this->table_name . " SET assignment=" . $this->assignment . ", class_work=" . $this->class_work . ", labs_projects =" . $this->labs_projects . ", work_book =" . $this->work_book . ", final_grade =" . $final_grade .
-        "WHERE ( ( student_id = '". $this->student_id . "' AND subject_id ='" . $this->subject_id . "')) AND ( grading_period =" .$this->grading_period . " )";
+        $query = "UPDATE student_subject_grade SET score = '". $this->score ."', score_equivalent = ((2 / no_of_items) * 100 ) * (percentage / 100)
+        WHERE criteria_id ='". $this->criteria_id ."'";
         
         // prepare query
-        $stmt = $this->conn->prepare($q);
+        $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;  
     }

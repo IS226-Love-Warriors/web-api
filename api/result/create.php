@@ -67,6 +67,7 @@ $data = json_decode(file_get_contents("php://input"));
             $grades->criteria_id = $criteria_id;
             $grades->criteria_name = $criteria_name;
             $grades->score = $score;
+            $grades->no_of_items = $items;
             $grades->percentage = $percentage;
             $grades->score_equivalent =  (($score / $items) * 100) * ($percentage/100);
             $grades->ssgCreate();
