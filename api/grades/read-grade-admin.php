@@ -28,31 +28,39 @@ if(!empty($data)){
     if($num > 0){
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             extract($row);
-            $d["student_id"] = $student_id;
-            $d["name"] = $first_name . " " . $last_name;
+            if($grade_year_level == $data->grade_year_level){
+                $d["student_id"] = $student_id;
+                $d["name"] = $first_name . " " . $last_name;
 
-            $grades->student_id = $student_id;
-            $grades_stmt = $grades->getAllStudentWithGradesPerSubject();
-            while ($grades_row = $grades_stmt->fetch(PDO::FETCH_ASSOC)){
-                extract($grades_row);
-                $grades_item = array(
-                    "grading_period" => $grading_period,
-                    "subject_id" => $subject_id,
-                    "subject_name" => $subject_name,
-                    "grade" => $grade 
-                );
-                array_push($grades_arr, $grades_item);
-                $d["grades"] = $grades_arr;
+                $grades->student_id = $student_id;
+                $grades_stmt = $grades->getAllStudentWithGradesPerSubject();
+                while ($grades_row = $grades_stmt->fetch(PDO::FETCH_ASSOC)){
+                    extract($grades_row);
+                    $grades_item = array(
+                        "grading_period" => $grading_period,
+                        "subject_id" => $subject_id,
+                        "subject_name" => $subject_name,
+                        "grade" => $grade 
+                    );
+                    array_push($grades_arr, $grades_item);
+                    $d["grades"] = $grades_arr;
+                }
+                array_push($users_arr, $d);
+                $grades_arr = [];
             }
-            array_push($users_arr, $d);
-            $grades_arr = [];
         }
 
-        http_response_code(200);
-        echo json_encode(array("code" => "Ok", "message" => "Record fetched","data" => $users_arr));
+        if(count($users_arr) > 0){
+            http_response_code(200);
+            echo json_encode(array("code" => "Ok", "message" => "Record fetched","data" => $users_arr));
+        }
+        else{
+            http_response_code(200);
+            echo json_encode(array("code" => "Conflict", "message" => "No student yet in this grade level", "data"=>$users_arr));
+        }
     } else {
-        http_response_code(404);
-        echo json_encode(array("code" => "Error", "message" => "User does not exists"));
+        http_response_code(200);
+        echo json_encode(array("code" => "Conflict", "message" => "User does not exists"));
     }
 }
 // tell the user credentials are incomplete

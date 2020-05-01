@@ -16,37 +16,21 @@ $db = $database->getConnection();
   
 // initialize object
 $user = new User($db);
-
-// get posted data
-$data = json_decode(file_get_contents("php://input"));
-
-if(!empty($data)){
-    $user->grade_year = $data->year_level;
-
-    $stmt = $user->readByYearLevel();
-    $num = $stmt->rowCount();
-    $users_arr = array();
-    if($num > 0){
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-            extract($row);
-            $d["user_id"] = $user_id;
-            $d["first_name"] = $first_name;
-            $d["last_name"] = $last_name; 
-            array_push($users_arr, $d);
-        }
-
-        http_response_code(200);
-        echo json_encode(array("code" => "Ok", "message" => "Record fetched","data" => $users_arr));
-    } else {
-        http_response_code(404);
-        echo json_encode(array("code" => "Error", "message" => "User does not exists"));
-    }
+$level_arr = array();
+$user_stmt = $user->readAllYearLevel();
+$num = $user_stmt->rowCount();
+if($num>0){
+while ($level_row = $user_stmt->fetch(PDO::FETCH_ASSOC)){
+    extract($level_row);
+    $level_item = array(
+        "grade_year_level" => $grade_year_level
+    );
+    array_push($level_arr, $level_item);
 }
-// tell the user credentials are incomplete
-else{
-    // set response code - 400 bad request
-    http_response_code(403);
-    // tell the user
-    echo json_encode(array("message" => "Identifier cannot be emptied"));
+http_response_code(200);
+echo json_encode(array("code" => "Ok", "message" => "Record fetched","data" => $level_arr));
+} else {
+    http_response_code(404);
+    echo json_encode(array("code" => "Error", "message" => "No Student record yet."));
 }
 ?>

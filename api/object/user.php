@@ -78,6 +78,18 @@ class User{
         return $stmt;
     }
 
+    function readAllYearLevel(){
+        // select all query
+        $query = "SELECT grade_year_level FROM users WHERE account_type = 3 GROUP BY `grade_year_level`";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
+
     // create product
     function userCreate(){
         $q = "INSERT INTO

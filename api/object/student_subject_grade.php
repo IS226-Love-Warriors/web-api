@@ -84,13 +84,12 @@ class StudentSubjectGrade{
         return $stmt;  
     }
     function getAllStudent(){
-        $query = "SELECT ssg.student_id, u.first_name, u.last_name
+        $query = "SELECT ssg.student_id, u.first_name, u.last_name, u.grade_year_level
         FROM student_subject_grade ssg
         JOIN users u ON ssg.student_id = u.user_id
         GROUP BY student_id;";
 
         $stmt = $this->conn->prepare($query);
-
         $stmt->execute();
         return $stmt;
 
