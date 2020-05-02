@@ -9,6 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // include database and object files
 include_once '../config/database.php';
 include_once '../object/student_subject_grade.php';
+include_once '../object/user.php';
 
 // instantiate database and product object
 $database = new Database();
@@ -16,6 +17,7 @@ $db = $database->getConnection();
   
 // initialize object
 $grades = new StudentSubjectGrade($db);
+$teacher = new User($db);
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
@@ -35,12 +37,18 @@ if(!empty($data)){
             $users_arr["student_id"] = $student_id;
             $users_arr["name"] = $first_name . " " . $last_name;
 
-            $grades_item = array(
-                "grading_period" => $grading_period,
-                "subject_id" => $subject_id,
-                "subject_name" => $subject_name,
-                "grade" => $grade 
-            );
+            $teacher->user_id = $assigned_teacher;
+            $tchr_stmt = $teacher->readOneById();
+            while ($tchr_row = $tchr_stmt->fetch(PDO::FETCH_ASSOC)){
+                extract($tchr_row);
+                $grades_item = array(
+                    "grading_period" => $grading_period,
+                    "subject_id" => $subject_id,
+                    "subject_name" => $subject_name,
+                    "grade" => $grade,
+                    "teacher" => $first_name . " " . $last_name
+                );
+            }            
             array_push($users_arr["grades"], $grades_item);
         }
 

@@ -91,7 +91,7 @@ class StudentSubjectGrade{
     }
 
     function getAllStudentWithGradesPerSubject(){
-        $query = "SELECT ssg.student_id,u.first_name, u.last_name, ssg.grading_period, ssg.subject_id, s.subject_name, sum(score_equivalent) as grade 
+        $query = "SELECT ssg.student_id,u.first_name, u.last_name, ssg.grading_period, ssg.subject_id, s.subject_name, s.assigned_teacher, sum(score_equivalent) as grade 
         FROM student_subject_grade ssg
         JOIN users u ON ssg.student_id = u.user_id
         JOIN subjects s ON ssg.subject_id = s.subject_id
