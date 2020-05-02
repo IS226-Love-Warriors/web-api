@@ -96,7 +96,7 @@ class StudentSubjectGrade{
         JOIN users u ON ssg.student_id = u.user_id
         JOIN subjects s ON ssg.subject_id = s.subject_id
         WHERE ssg.student_id = '". $this->student_id ."'
-        GROUP BY subject_id, student_id";
+        GROUP BY subject_id, student_id, grading_period";
 
         
         $stmt = $this->conn->prepare($query);
