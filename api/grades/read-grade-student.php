@@ -41,9 +41,8 @@ if(!empty($data)){
                 "subject_name" => $subject_name,
                 "grade" => $grade 
             );
-            array_push($grades_arr, $grades_item);
+            array_push($users_arr["grades"], $grades_item);
         }
-        array_push($users_arr["grades"], $grades_arr);
 
         http_response_code(200);
         echo json_encode(array("code" => "Ok", "message" => "Record fetched","data" => $users_arr));
