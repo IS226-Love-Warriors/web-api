@@ -26,6 +26,9 @@ if(!empty($data)){
     $stmt = $grades->ssgUpdate();
     $num = $stmt->rowCount();
 
+    http_response_code(200);
+    echo json_encode(array("code" => "Ok", "message" => "Record updated","data" => []));
+
    
 }
 // tell the user credentials are incomplete
