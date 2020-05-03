@@ -23,25 +23,42 @@ $user = new User($db);
 $data = json_decode(file_get_contents("php://input"));
     if(!empty($data)){
 
+    $user_stmt = $user->readLast();
+    $user_count = $user_stmt->rowCount();
+
+    if($user_count > 0){
+        while ($user_row = $user_stmt->fetch(PDO::FETCH_ASSOC)){
+            extract($user_row);
+            if($data->account_type == 1){
+                $user->user_id = "admin_2019_2020_1" . ( $id + 5);
+            }
+            if($data->account_type == 2){
+                $user->user_id = "tchr_2019_2020_1" . ( $id + 5);
+            }
+            else{
+                $user->user_id = "stdnt_2019_2020_1" . ( $id + 5);
+            }
+        }
+    } else{
+        if($data->account_type == 1){
+            $user->user_id = "admin_2019_2020_1";
+        }
+        if($data->account_type == 2){
+            $user->user_id = "tchr_2019_2020_1";
+        }
+        else{
+            $user->user_id = "stdnt_2019_2020_1";
+        }
+    }
     $user->email = $data->email;
     $user->account_type = $data->account_type;
     $user->password = md5($data->password);
-
-    if($data->account_type == 1){
-        $user->user_id = uniqid('admin_');
-    }
-    if($data->account_type == 2){
-        $user->user_id = uniqid('tchr_');
-    }
-    else{
-        $user->user_id = uniqid('stdnt_');
-    }
-    
     $user->grade_year_level = $data->grade_year_level;
     $user->acad_year = $data->acad_year;
     $user->first_name = $data->first_name;
     $user->last_name = $data->last_name;
     $user->created_at = date("Y/m/d");
+    
     
     $stmt = $user->readOne();
     $num = $stmt->rowCount();
