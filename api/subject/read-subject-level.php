@@ -27,22 +27,38 @@ $d = [];
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
 $subject_arr = array();
+$subjects_arr["records"] = array();
 if(!empty($data)){
     $subject->grade_year = $data->grade_year;
 
-    $stmt = $subject->readByLevel();
-    $num = $stmt->rowCount();
+    $stmt_teacher = $subject->readByLevel();
+    $num = $stmt_teacher->rowCount();
 
     if($num > 0){
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-            extract($row);
+        while ($subj_row = $stmt_teacher->fetch(PDO::FETCH_ASSOC)){
+        
+            extract($subj_row);
+            $user->user_id = $assigned_teacher;
+            $stmtu = $user->readOneById();
+            $numu = $stmtu->rowCount();
+            
             $subject_item["subject_id"] = $subject_id;
             $subject_item["subject_name"] = $subject_name;
-            array_push($subject_arr, $subject_item);
+            $subject_item["level"] = $level;
+            $subject_item["acad_year"] = $acad_year;
+            $subject_item["grade_year"] = $grade_year;
+    
+            while ($rowu = $stmtu->fetch(PDO::FETCH_ASSOC)){
+                extract($rowu);
+                $d["user_id"] = $user_id;
+                $d["name"] = $first_name . ' ' . $last_name;
+                $subject_item["assigned_teacher"] = $d;
+                array_push($subjects_arr["records"], $subject_item);   
+            }
         }
 
         http_response_code(200);
-        echo json_encode(array("code" => "Ok", "message" => "Record fetched", "data" => $subject_arr));
+        echo json_encode(array("code" => "Ok", "message" => "Record fetched", "data" => $subjects_arr));
     } else {
         http_response_code(200);
         echo json_encode(array("code" => "Conflict", "message" => "No subject associated with this grade level", "data" => $subject_arr));
