@@ -59,5 +59,15 @@ class Examination{
         return $stmt;
     }
 
+    function examUpdate(){
+        
+        $query = "UPDATE examinations SET exam_date = '". $this->exam_date ."', exam_desc = '". $this->exam_desc ."', criteria_id = '". $this->criteria_id ."'
+        WHERE exam_id ='". $this->exam_id ."'";
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;  
+    }
+
 }
 ?>
