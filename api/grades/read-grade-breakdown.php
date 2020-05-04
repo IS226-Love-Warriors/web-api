@@ -39,6 +39,7 @@ if(!empty($data)){
             "criteria_id" => $criteria_id,
             "criteria_name" => $criteria_name,
             "score" => $score,
+            "no_of_items" => $no_of_items,
             "percentage" => $percentage,
             "score_equivalent" => $score_equivalent
         );

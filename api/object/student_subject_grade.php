@@ -106,7 +106,7 @@ class StudentSubjectGrade{
     }
 
     function getGradesBreakdown(){
-        $query = "SELECT ssg.student_id,u.first_name, u.last_name, ssg.grading_period, ssg.subject_id, s.subject_name, ssg.criteria_id, ssg.criteria_name, ssg.score, ssg.percentage, ssg.score_equivalent 
+        $query = "SELECT ssg.student_id,u.first_name, u.last_name, ssg.grading_period, ssg.subject_id, s.subject_name, ssg.criteria_id, ssg.criteria_name, ssg.score, ssg.no_of_items, ssg.percentage, ssg.score_equivalent 
         FROM student_subject_grade ssg
         JOIN users u ON ssg.student_id = u.user_id
         JOIN subjects s ON ssg.subject_id = s.subject_id
