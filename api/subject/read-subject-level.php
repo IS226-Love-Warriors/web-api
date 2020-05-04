@@ -26,8 +26,7 @@ $d = [];
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
-$subject_arr = array();
-$subjects_arr["records"] = array();
+$subjects_arr = array();
 if(!empty($data)){
     $subject->grade_year = $data->grade_year;
 
@@ -54,7 +53,7 @@ if(!empty($data)){
                 $d["name"] = $first_name . ' ' . $last_name;
                 $d["email"] = $email;
                 $subject_item["assigned_teacher"] = $d;
-                array_push($subjects_arr["records"], $subject_item);   
+                array_push($subjects_arr, $subject_item);   
             }
         }
 

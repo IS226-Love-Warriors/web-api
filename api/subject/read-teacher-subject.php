@@ -21,7 +21,6 @@ $num = $stmt->rowCount();
 $data = json_decode(file_get_contents("php://input"));
 if($num>0){
     $subjects_arr=array();
-    $subjects_arr["records"] = array();
     $subject->assigned_teacher = $data->teacher_id;
     $stmt_teacher = $subject->readByAssignedTeacher();
     $numu = $stmt_teacher->rowCount();
@@ -62,7 +61,7 @@ if($num>0){
                 $d["name"] = $first_name . ' ' . $last_name;
                 $d["email"] = $email;
                 $subject_item["assigned_teacher"] = $d;
-                array_push($subjects_arr["records"], $subject_item);   
+                array_push($subjects_arr, $subject_item);   
             }
         }
 
