@@ -21,6 +21,7 @@ $num = $stmt->rowCount();
 $data = json_decode(file_get_contents("php://input"));
 if($num>0){
     $subjects_arr=array();
+    $subjects_arr["records"] = array();
     $subject->assigned_teacher = $data->teacher_id;
     $stmt_teacher = $subject->readByAssignedTeacher();
     $numu = $stmt_teacher->rowCount();
@@ -57,12 +58,12 @@ if($num>0){
     
             while ($rowu = $stmtu->fetch(PDO::FETCH_ASSOC)){
                 extract($rowu);
-                $d["user_id"] = $user_id;
-                $d["name"] = $first_name . ' ' . $last_name;
-                $d["email"] = $email;
-                $subject_item["assigned_teacher"] = $d;
-                array_push($subjects_arr, $subject_item);   
+                $subjects_arr["assigned_teacher"]["user_id"] = $user_id;
+                $subjects_arr["assigned_teacher"]["name"] = $first_name . ' ' . $last_name;
+                $subjects_arr["assigned_teacher"]["email"] = $email; 
             }
+
+            array_push($subjects_arr["records"], $subject_item);  
         }
 
         http_response_code(200);

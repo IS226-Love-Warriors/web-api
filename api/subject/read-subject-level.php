@@ -26,7 +26,8 @@ $d = [];
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
-$subjects_arr = array();
+$subject_arr = array();
+$subjects_arr["records"] = array();
 if(!empty($data)){
     $subject->grade_year = $data->grade_year;
 
@@ -49,12 +50,12 @@ if(!empty($data)){
     
             while ($rowu = $stmtu->fetch(PDO::FETCH_ASSOC)){
                 extract($rowu);
-                $d["user_id"] = $user_id;
-                $d["name"] = $first_name . ' ' . $last_name;
-                $d["email"] = $email;
-                $subject_item["assigned_teacher"] = $d;
-                array_push($subjects_arr, $subject_item);   
+                $subjects_arr["assigned_teacher"]["user_id"] = $user_id;
+                $subjects_arr["assigned_teacher"]["name"] = $first_name . ' ' . $last_name;
+                $subjects_arr["assigned_teacher"]["email"] = $email;
+                  
             }
+            array_push($subjects_arr["records"], $subject_item); 
         }
 
         http_response_code(200);
