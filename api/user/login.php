@@ -37,6 +37,7 @@ if(!empty($data)){
                 $data->account_type = $account_type;
                 $data->first_name = $first_name;
                 $data->last_name=$last_name;
+                $data->grade_level = $grade_year_level;
 
                 http_response_code(200);
                 echo json_encode(array("code" => "Ok", "message" => "Successfully logged in","data" => $data));
