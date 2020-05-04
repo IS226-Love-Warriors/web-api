@@ -124,5 +124,15 @@ class User{
         return $stmt;
         
     }
+
+    function userUpdate(){
+        
+        $query = "UPDATE users SET email = '". $this->email ."', first_name = '". $this->first_name ."', last_name = '". $this->last_name ."'
+        WHERE user_id ='". $this->user_id ."'";
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;  
+    }
 }
 ?>

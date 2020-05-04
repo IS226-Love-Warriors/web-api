@@ -31,8 +31,8 @@ $exam_arr=array();
 if($num > 0){
     $score = 0;
     $items = 0;
-    $results->student_id = $data->student_id;
     $results->exam_id = $data->exam_id;
+    $results->student_id = $data->student_id;
     $results_stmt = $results->readByStudentAndExam();
     $row_count = $results_stmt->rowCount();
 

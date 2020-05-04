@@ -33,6 +33,7 @@ if(!empty($data)){
     $results->exam_id = $data->exam_id;
     $results->student_id = $data->student_id;
     $result_stmt = $results->readByStudentAndExam();
+
     while ($result_row = $result_stmt->fetch(PDO::FETCH_ASSOC)){
         extract($result_row);
 

@@ -17,33 +17,31 @@ $db = $database->getConnection();
 // initialize object
 $exams = new Examination($db);
 
-// get posted data
 $data = json_decode(file_get_contents("php://input"));
-    // make sure data is not empty
     if(!empty($data)){
-    // set user property values
-    $exams->exam_id = uniqid('exam_');
+    $exam_stmt = $exams->read();
+    $exam_count = $exam_stmt->rowCount();
+
+    if($exam_count>0){
+        while ($exam_row = $exam_stmt->fetch(PDO::FETCH_ASSOC)){
+            extract($exam_row);
+            $exams->exam_id = "exam_2019_2020_1" . ( $id + 5);
+        }
+    } else{
+        $exams->exam_id = "exam_2019_2020_1";
+    }
+    
     $exams->grading_period = $data->grading_period;
     $exams->subject_id = $data->subject_id;
     $exams->exam_date = $data->exam_date;
     $exams->exam_desc = $data->exam_desc;
     $exams->criteria_id = $data->criteria_id;
 
-    // create the user
-    if($exams->createExam()){
-        // set response code - 201 created
-        http_response_code(201);
-        // tell the subject
-        echo json_encode(array("message" => "Examination was created."));
-    }
-  
-    // if unable to create the subject, tell the subject
-    else{
-        http_response_code(503);
-        echo json_encode(array("message" => "Unable to create examination."));
-    }
+    $exams->createExam();
+    $exam["exam_id"] = $exams->exam_id;
+    http_response_code(201);
+    echo json_encode(array("code" => "Ok", "message" => "Examination was created.", "data" => $exam));
 }
-// tell the exam data is incomplete
 else{
   
     // set response code - 400 bad request
