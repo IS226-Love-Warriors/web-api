@@ -52,6 +52,7 @@ if(!empty($data)){
                 extract($rowu);
                 $d["user_id"] = $user_id;
                 $d["name"] = $first_name . ' ' . $last_name;
+                $d["email"] = $email;
                 $subject_item["assigned_teacher"] = $d;
                 array_push($subjects_arr["records"], $subject_item);   
             }
