@@ -58,6 +58,8 @@ if(!empty($data)){
             http_response_code(200);
             echo json_encode(array("code" => "Conflict", "message" => "No student yet in this grade level", "data"=>$users_arr));
         }
+
+        
     } else {
         http_response_code(200);
         echo json_encode(array("code" => "Conflict", "message" => "User does not exists"));

@@ -10,6 +10,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../config/database.php';
 include_once '../object/student_subject_grade.php';
 include_once '../object/user.php';
+include_once '../object/subject.php';
 
 // instantiate database and product object
 $database = new Database();
@@ -18,6 +19,7 @@ $db = $database->getConnection();
 // initialize object
 $grades = new StudentSubjectGrade($db);
 $teacher = new User($db);
+$subject = new Subject($db);
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
@@ -52,8 +54,39 @@ if(!empty($data)){
             array_push($users_arr["grades"], $grades_item);
         }
 
-        http_response_code(200);
-        echo json_encode(array("code" => "Ok", "message" => "Record fetched","data" => $users_arr));
+        if(count($users_arr["grades"])>0){
+            http_response_code(200);
+            echo json_encode(array("code" => "Ok", "message" => "Record fetched","data" => $users_arr));
+        } else{
+            $teacher->user_id = $data->student_id;
+            $stud_stmt = $teacher->readOneById();
+            while ($stud_row = $stud_stmt->fetch(PDO::FETCH_ASSOC)){
+                extract($stud_row);
+                $users_arr["student_id"] = $data->student_id;
+                $users_arr["name"] = $first_name . " " . $last_name;
+
+                $subject->grade_year = $grade_year_level;
+                $subject_stmt =  $subject->readByLevel();
+                while ($subj_row = $subject_stmt->fetch(PDO::FETCH_ASSOC)){
+                    extract($subj_row);
+                    $grades_item = array(
+                        "grading_period" => 0,
+                        "subject_id" => $subject_id,
+                        "subject_name" => $subject_name,
+                        "grade" => 0,
+                        "teacher" => $first_name . " " . $last_name
+                    );
+                    array_push($users_arr["grades"], $grades_item);
+                }
+            }
+
+
+            http_response_code(200);
+            echo json_encode(array("code" => "OK", "message" => "No Record fetched","data" => $users_arr));
+        }
+        
+
+
     } else {
         http_response_code(404);
         echo json_encode(array("code" => "Error", "message" => "User does not exists"));

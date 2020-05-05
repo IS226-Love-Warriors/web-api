@@ -36,7 +36,7 @@ class Subject{
     }
 
     function readByLevel(){
-        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year='" . $this->grade_year . "'";
+        $query = "SELECT subject_id, subject_name, first_name, last_name FROM subjects join users on subjects.assigned_teacher = users.user_id WHERE grade_year = '" . $this->grade_year ."'";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
