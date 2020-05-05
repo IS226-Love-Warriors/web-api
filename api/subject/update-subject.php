@@ -23,13 +23,11 @@ if(!empty($data)){
     $subject->subject_id = $data->subject_id;
     $subject_stmt = $subject->readBySubjId();
 
-    while ($exam_row = $exam_stmt->fetch(PDO::FETCH_ASSOC)){
-        extract($exam_row);
-        $exam->exam_date = (!empty($data->exam_date)) ? $data->exam_date : $exam_date;
-        $exam->exam_desc = (!empty($data->exam_desc)) ? $data->exam_desc : $exam_desc;
-        $exam->criteria_id = (!empty($data->criteria_id)) ? $data->criteria_id : $criteria_id;
-        $exam->is_active = (!empty($data->is_active)) ? 0 : $is_active;
-        $exam->examUpdate();
+    while ($subject_row = $subject_stmt->fetch(PDO::FETCH_ASSOC)){
+        extract($subject_row);
+        $subject->subject_name = (!empty($data->subject_name)) ? $data->subject_name : $subject_name;
+        $subject->is_active = (!empty($data->is_active)) ? 0 : $is_active;
+        $subject->subjectUpdate();
     }
 
     http_response_code(200);

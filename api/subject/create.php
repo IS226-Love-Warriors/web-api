@@ -26,7 +26,17 @@ $teacher = [];
 $data = json_decode(file_get_contents("php://input"));
     // make sure data is not empty
     if(!empty($data)){
-    $subject->subject_id = uniqid('subject_');
+    $subj_stmt = $subject->readLast();
+    $subj_count = $subj_stmt->rowCount();
+
+    if($subj_count > 0){
+        while ($subj_row = $subj_stmt->fetch(PDO::FETCH_ASSOC)){
+            extract($user_row);
+            $subject->subject_id = "subject_2019_2020_1" . ( $id + 5);
+        }
+    } else{
+        $subject->subject_id = "subject_2019_2020_1";
+    }
     
         $subject->subject_name = $data->subject_name;
         $subject->level = $data->level;

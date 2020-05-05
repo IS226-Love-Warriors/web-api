@@ -70,7 +70,15 @@ class Subject{
         
         $stmt->execute();
         return $stmt;
-        
+    }
+
+    function subjectUpdate(){
+        $query = "UPDATE subjects SET subject_name = '". $this->subject_name ."'
+        WHERE user_id ='". $this->user_id ."'";
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;  
     }
 }
 ?>

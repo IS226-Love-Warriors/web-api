@@ -27,24 +27,7 @@ if($num>0){
     $numu = $stmt_teacher->rowCount();
 
     if($numu>0){
-        // while ($subj_row = $stmt_teacher->fetch(PDO::FETCH_ASSOC)){
-        //     extract($subj_row);
-        //     print_r($subj_row);
-        //     $subject_item = array(
-        //         "subject_id" => $subject_id,
-        //         "subject_name" => $subject_name,
-        //         "level" => $level,
-        //         "acad_year" => $acad_year,
-        //         "grade_year" => $grade_year
-        //     );
-
-        //     array_push($subjects_arr, $subject_item);
-        // }
-
         while ($subj_row = $stmt_teacher->fetch(PDO::FETCH_ASSOC)){
-            // extract row
-            // this will make $row['name'] to
-            // just $name only
             extract($subj_row);
             $user->user_id = $assigned_teacher;
             $stmtu = $user->readOneById();
