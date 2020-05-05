@@ -31,7 +31,7 @@ $data = json_decode(file_get_contents("php://input"));
 
     if($subj_count > 0){
         while ($subj_row = $subj_stmt->fetch(PDO::FETCH_ASSOC)){
-            extract($user_row);
+            extract($subj_row);
             $subject->subject_id = "subject_2019_2020_1" . ( $id + 5);
         }
     } else{
