@@ -26,6 +26,18 @@ class Question{
         return $stmt;
     }
 
+    function read(){
+        // select all query
+        $query = "SELECT * FROM " . $this->table_name . "";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
+
     function readQuestionsAndChoices(){
         $query = "SELECT * FROM EXAM_ANSWER_CHOICES join EXAMS_QUESTIONS on EXAM_ANSWER_CHOICES.question_id = EXAMS_QUESTIONS.`question_id` WHERE EXAM_ANSWER_CHOICES.`question_id`='" . $this->question_id ."'";
         $stmt = $this->conn->prepare($query);
@@ -75,6 +87,15 @@ class Question{
         $stmt->execute();
         return $stmt;
         
+    }
+
+    function updateQuestion(){
+        $query = "UPDATE exams_questions SET question_type = '". $this->question_type ."', question_text = '". $this->question_text ."', is_active = $this->is_active 
+        WHERE question_id ='". $this->question_id ."'";
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;  
     }
 }
 ?>

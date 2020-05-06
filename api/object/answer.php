@@ -81,6 +81,19 @@ class Answer{
     return $stmt;
     }
 
+
+    function read(){
+        // select all query
+        $query = "SELECT * FROM " . $this->table_name . "";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
+    
     function getCorrectAnswer(){
         // select all query
         $query = "SELECT * FROM " . $this->table_name . " WHERE question_id ='" . $this->question_id . "' AND is_correct = 1" ;
@@ -103,6 +116,15 @@ class Answer{
         // execute query
         $stmt->execute();
         return $stmt;
+    }
+
+    function updateChoices(){
+        $query = "UPDATE exam_answer_choices SET answer_text = '". $this->answer_text ."', is_correct = '". $this->is_correct ."'
+        WHERE question_id ='". $this->question_id ."' AND answer_id = '" . $this->answer_id ."'";
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;  
     }
 
 }
