@@ -30,13 +30,11 @@ $subject_arr = array();
 $subjects_arr["records"] = array();
 if(!empty($data)){
     $subject->grade_year = $data->grade_year;
-
-    $stmt_teacher = $subject->readByLevel();
+    $stmt_teacher = $subject->readByLevelTeacher();
     $num = $stmt_teacher->rowCount();
 
     if($num > 0){
         while ($subj_row = $stmt_teacher->fetch(PDO::FETCH_ASSOC)){
-        
             extract($subj_row);
             $user->user_id = $assigned_teacher;
             $stmtu = $user->readOneById();
