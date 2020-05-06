@@ -48,11 +48,12 @@ if(!empty($data)){
     
             while ($rowu = $stmtu->fetch(PDO::FETCH_ASSOC)){
                 extract($rowu);
-                $subjects_arr["assigned_teacher"]["user_id"] = $user_id;
-                $subjects_arr["assigned_teacher"]["name"] = $first_name . ' ' . $last_name;
-                $subjects_arr["assigned_teacher"]["email"] = $email;
+                $subject_arr["assigned_teacher"]["user_id"] = $user_id;
+                $subject_arr["assigned_teacher"]["name"] = $first_name . ' ' . $last_name;
+                $subject_arr["assigned_teacher"]["email"] = $email;
                   
             }
+            $subject_item["assigned_teacher"] = $subject_arr["assigned_teacher"];
             array_push($subjects_arr["records"], $subject_item); 
         }
 
