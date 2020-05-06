@@ -36,7 +36,6 @@ if($num>0){
 
             while ($row = $stmts->fetch(PDO::FETCH_ASSOC)){
                 extract($row);
-
                 $user->user_id  = $assigned_teacher;
                 $user_stmt = $user->readOneById();
                 while($user_row = $user_stmt->fetch(PDO::FETCH_ASSOC)){

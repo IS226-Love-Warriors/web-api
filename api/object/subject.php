@@ -24,7 +24,7 @@ class Subject{
 
     function read(){
         // select all query
-        $query = "SELECT * FROM " . $this->table_name . " WHERE is_active = 1";
+        $query = "SELECT * FROM " . $this->table_name . "";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);

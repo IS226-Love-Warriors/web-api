@@ -59,6 +59,22 @@ class Examination{
         return $stmt;
     }
 
+    function readByTeacherId(){
+        // select all query
+        $query = "SELECT subjects.subject_id, examinations.grading_period, examinations.exam_desc, subjects.assigned_teacher, users.first_name, users.last_name, users.is_active
+        FROM examinations 
+        join subjects on examinations.subject_id = subjects.subject_id
+        join users on assigned_teacher = users.user_id
+        WHERE assigned_teacher = '". $this->teacher_id ."' AND users.is_active = 1";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+        return $stmt;
+    }
+
     function examUpdate(){
         
         $query = "UPDATE examinations SET exam_date = '". $this->exam_date ."', exam_desc = '". $this->exam_desc ."', criteria_id = '". $this->criteria_id ."'
