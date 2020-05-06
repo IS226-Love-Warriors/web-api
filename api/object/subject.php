@@ -11,7 +11,7 @@ class Subject{
     }
     
     function readLast(){
-        $query = "SELECT * FROM " . $this->table_name . " WHERE is_active = 1 ORDER BY ID DESC LIMIT 1";
+        $query = "SELECT * FROM " . $this->table_name . " ORDER BY ID DESC LIMIT 1";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
