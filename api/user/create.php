@@ -30,24 +30,24 @@ $data = json_decode(file_get_contents("php://input"));
         while ($user_row = $user_stmt->fetch(PDO::FETCH_ASSOC)){
             extract($user_row);
             if($data->account_type == 1){
-                $user->user_id = "admin_2019_2020_1" . ( $id + 5);
+                $user->user_id = "2020-1" . ( $id + 5);
             }
             if($data->account_type == 2){
-                $user->user_id = "tchr_2019_2020_1" . ( $id + 5);
+                $user->user_id = "2020-1" . ( $id + 5);
             }
             else{
-                $user->user_id = "stdnt_2019_2020_1" . ( $id + 5);
+                $user->user_id = "2020-1" . ( $id + 5);
             }
         }
     } else{
         if($data->account_type == 1){
-            $user->user_id = "admin_2019_2020_1";
+            $user->user_id = "2020-1";
         }
         if($data->account_type == 2){
-            $user->user_id = "tchr_2019_2020_1";
+            $user->user_id = "2020-1";
         }
         else{
-            $user->user_id = "stdnt_2019_2020_1";
+            $user->user_id = "2020-1";
         }
     }
     $user->email = $data->email;

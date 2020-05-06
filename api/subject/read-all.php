@@ -54,7 +54,7 @@ if($num>0){
     echo json_encode(array("code" => "Ok", "message" => "Records fetched", "data" => $subjects_arr));
 
 } else{
-    http_response_code(404);
+    http_response_code(200);
     echo json_encode(
         array("message" => "No subjects found.")
     );
