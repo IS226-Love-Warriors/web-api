@@ -57,7 +57,7 @@ class Subject{
     }
 
     function readDistinctBySubjId(){
-        $query = "SELECT DISTINCT subject_id, subject_name FROM " . $this->table_name . " WHERE subject_id='" . $this->subject_id . "' AND is_active = 1";
+        $query = "SELECT DISTINCT subject_id, subject_name FROM " . $this->table_name . " WHERE subject_id='" . $this->subject_id . "'";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;

@@ -50,7 +50,7 @@ class User{
     //get one record
     function readOne(){
         // select all query
-        $query = "SELECT * FROM " . $this->table_name . " WHERE email='" . $this->email . "' AND is_active = 1";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE email='" . $this->email . "'";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -61,7 +61,7 @@ class User{
 
     function readOneById(){
         // select all query
-        $query = "SELECT * FROM " . $this->table_name . " WHERE user_id='" . $this->user_id . "' AND is_active = 1";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE user_id='" . $this->user_id . "'";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -72,7 +72,7 @@ class User{
     }
 
     function readByYearLevel(){
-        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year_level='" . $this->grade_year . "' AND is_active = 1";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year_level='" . $this->grade_year . "'";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
@@ -80,7 +80,7 @@ class User{
 
     function readByGradeLevel(){
         // select all query
-        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year_level='" . $this->grade_year_level . "' AND is_active = 1";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year_level='" . $this->grade_year_level . "'";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
