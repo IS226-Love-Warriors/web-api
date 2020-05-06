@@ -52,7 +52,7 @@ if($num>0){
         http_response_code(200);
         echo json_encode(array("code" => "Ok", "message" => "Record fetched", "data" => $subjects_arr));
     } else{
-        http_response_code(404);
+        http_response_code(200);
         echo json_encode(
             array("message" => "No subject assigned yet to this teacher.")
         );
