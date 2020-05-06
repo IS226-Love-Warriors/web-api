@@ -72,14 +72,8 @@ if($num>0){
     http_response_code(201);
     echo json_encode(array("code"=>"Ok", "message" => "Record fetched", "data"=> $exams_arr));
 } else{
-  
-    // set response code - 404 Not found
-    http_response_code(404);
-  
-    // tell the user no record found
-    echo json_encode(
-        array("message" => "No examination found.")
-    );
+    http_response_code(200);
+    echo json_encode(array("code" => "Ok", "message" => "No record found.", "data" => $exams_arr));
 }
 
 ?>

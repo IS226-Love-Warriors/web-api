@@ -58,9 +58,7 @@ if($num>0){
         );
     }
 } else{
-    http_response_code(404);
-    echo json_encode(
-        array("message" => "No subjects found.")
-    );
+    http_response_code(200);
+    echo json_encode(array("code" => "Ok", "message" => "No subjects found."));
 }
 ?>
