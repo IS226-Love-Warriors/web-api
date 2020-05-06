@@ -74,7 +74,7 @@ if(!empty($data)){
         http_response_code(200);
         echo json_encode(array("code" => "Ok", "message" => "Record fetched", "data" => $subject_item));
     } else {
-        http_response_code(404);
+        http_response_code(200);
         echo json_encode(array("code" => "Error", "message" => "Subject does not exists"));
     }
 }

@@ -50,7 +50,7 @@ class Subject{
     }
        //get one record
     function readBySubjId(){
-        $query = "SELECT * FROM SUBJECTS join USERS on SUBJECTS.`assigned_teacher` = USERS.`user_id` WHERE SUBJECTS.`subject_id` = '" . $this->subject_id . "' AND is_active = 1";
+        $query = "SELECT * FROM SUBJECTS join USERS on SUBJECTS.`assigned_teacher` = USERS.`user_id` WHERE SUBJECTS.subject_id = '" . $this->subject_id . "' AND SUBJECTS.is_active = 1";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
