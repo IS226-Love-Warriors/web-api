@@ -61,7 +61,7 @@ class Examination{
 
     function readByTeacherId(){
         // select all query
-        $query = "SELECT subjects.subject_id, examinations.grading_period, examinations.exam_desc, subjects.assigned_teacher, users.first_name, users.last_name, users.is_active
+        $query = "SELECT subjects.subject_id, subjects.subject_name, examinations.exam_id, examinations.grading_period, examinations.exam_desc,examinations.exam_date, subjects.assigned_teacher, users.first_name, users.last_name, users.is_active
         FROM examinations 
         join subjects on examinations.subject_id = subjects.subject_id
         join users on assigned_teacher = users.user_id
