@@ -11,7 +11,7 @@ class Subject{
     }
     
     function readLast(){
-        $query = "SELECT * FROM " . $this->table_name . " ORDER BY ID DESC LIMIT 1";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE is_active = 1 ORDER BY ID DESC LIMIT 1";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -24,7 +24,7 @@ class Subject{
 
     function read(){
         // select all query
-        $query = "SELECT * FROM " . $this->table_name . "";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE is_active = 1";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -36,28 +36,28 @@ class Subject{
     }
 
     function readByLevel(){
-        $query = "SELECT subject_id, subject_name, first_name, last_name FROM subjects join users on subjects.assigned_teacher = users.user_id WHERE grade_year = '" . $this->grade_year ."'";
+        $query = "SELECT subject_id, subject_name, first_name, last_name FROM subjects join users on subjects.assigned_teacher = users.user_id WHERE grade_year = '" . $this->grade_year ."' AND is_active = 1";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
     }
 
     function readByAssignedTeacher(){
-        $query = "SELECT * FROM " . $this->table_name . " WHERE assigned_teacher='" . $this->assigned_teacher . "'";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE assigned_teacher='" . $this->assigned_teacher . "' AND is_active = 1";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
     }
        //get one record
     function readBySubjId(){
-        $query = "SELECT * FROM SUBJECTS join USERS on SUBJECTS.`assigned_teacher` = USERS.`user_id` WHERE SUBJECTS.`subject_id` = '" . $this->subject_id . "'";
+        $query = "SELECT * FROM SUBJECTS join USERS on SUBJECTS.`assigned_teacher` = USERS.`user_id` WHERE SUBJECTS.`subject_id` = '" . $this->subject_id . "' AND is_active = 1";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
     }
 
     function readDistinctBySubjId(){
-        $query = "SELECT DISTINCT subject_id, subject_name FROM " . $this->table_name . " WHERE subject_id='" . $this->subject_id . "'";
+        $query = "SELECT DISTINCT subject_id, subject_name FROM " . $this->table_name . " WHERE subject_id='" . $this->subject_id . "' AND is_active = 1";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;

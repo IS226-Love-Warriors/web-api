@@ -37,7 +37,7 @@ class Examination{
 
     function read(){
         // select all query
-        $query = "SELECT * FROM " . $this->table_name . "";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE is_active = 1";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -49,7 +49,7 @@ class Examination{
 
     function readByExaminationId(){
         // select all query
-        $query = "SELECT * FROM " . $this->table_name . " WHERE exam_id='" . $this->exam_id . "'";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE exam_id='" . $this->exam_id . "' AND is_active = 1";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);

@@ -31,7 +31,6 @@ if(!empty($data)){
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             extract($row);
             if($enteredPass == $password){
-                
                 $data->id = $user_id;
                 $data->email = $email;
                 $data->account_type = $account_type;
@@ -48,6 +47,11 @@ if(!empty($data)){
             }
         }
     }
+    else {
+        http_response_code(200);
+        echo json_encode(array("code" => "Error", "message" => "Invalid username or password"));
+    }
+
 }
 // tell the user credentials are incomplete
 else{

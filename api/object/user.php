@@ -22,7 +22,7 @@ class User{
     }
 
     function readLast(){
-        $query = "SELECT * FROM " . $this->table_name . " ORDER BY ID DESC LIMIT 1";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE is_active = 1 ORDER BY ID DESC LIMIT 1";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -36,24 +36,24 @@ class User{
     // read users
     function read(){
         // select all query
-        $query = "SELECT * FROM " . $this->table_name . "";
+        $query = "SELECT * FROM " . $this->table_name . "WHERE is_active = 1";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
-    
+        
         // execute query
         $stmt->execute();
+       
         return $stmt;
     }
 
     //get one record
     function readOne(){
         // select all query
-        $query = "SELECT * FROM " . $this->table_name . " WHERE email='" . $this->email . "'";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE email='" . $this->email . "' AND is_active = 1";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
-
         // execute query
         $stmt->execute();
         return $stmt;
@@ -61,7 +61,7 @@ class User{
 
     function readOneById(){
         // select all query
-        $query = "SELECT * FROM " . $this->table_name . " WHERE user_id='" . $this->user_id . "'";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE user_id='" . $this->user_id . "' AND is_active = 1";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -72,7 +72,7 @@ class User{
     }
 
     function readByYearLevel(){
-        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year_level='" . $this->grade_year . "'";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year_level='" . $this->grade_year . "' AND is_active = 1";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
@@ -80,7 +80,7 @@ class User{
 
     function readByGradeLevel(){
         // select all query
-        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year_level='" . $this->grade_year_level . "'";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE grade_year_level='" . $this->grade_year_level . "' AND is_active = 1";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -92,7 +92,7 @@ class User{
 
     function readAllYearLevel(){
         // select all query
-        $query = "SELECT grade_year_level FROM users WHERE account_type = 3 GROUP BY `grade_year_level`";
+        $query = "SELECT grade_year_level FROM users WHERE account_type = 3 AND is_active = 1 GROUP BY `grade_year_level`";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
