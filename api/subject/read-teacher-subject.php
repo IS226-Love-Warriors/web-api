@@ -19,13 +19,12 @@ $num = $stmt->rowCount();
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
+$subjects_arr=array();
+$subjects_arr["records"] = array();
 if($num>0){
-    $subjects_arr=array();
-    $subjects_arr["records"] = array();
     $subject->assigned_teacher = $data->teacher_id;
     $stmt_teacher = $subject->readByAssignedTeacher();
     $numu = $stmt_teacher->rowCount();
-
     if($numu>0){
         while ($subj_row = $stmt_teacher->fetch(PDO::FETCH_ASSOC)){
             extract($subj_row);
@@ -54,11 +53,11 @@ if($num>0){
     } else{
         http_response_code(200);
         echo json_encode(
-            array("message" => "No subject assigned yet to this teacher.")
+            array("message" => "No subject assigned yet to this teacher.", "data" => $subjects_arr)
         );
     }
 } else{
     http_response_code(200);
-    echo json_encode(array("code" => "Ok", "message" => "No subjects found."));
+    echo json_encode(array("code" => "Ok", "message" => "No subjects found.", "data" => $subjects_arr));
 }
 ?>
