@@ -31,7 +31,6 @@ if(!empty($data)){
     $users_arr["grades"] = array();
     $grades_arr = array();
     if($num > 0){
-        
         $grades->student_id = $data->student_id;
         $grades_stmt = $grades->getAllStudentWithGradesPerSubject();
         while ($grades_row = $grades_stmt->fetch(PDO::FETCH_ASSOC)){
@@ -108,7 +107,7 @@ if(!empty($data)){
             }
         }
         http_response_code(200);
-        echo json_encode(array("code" => "Error", "message" => "User does not exists"));
+        echo json_encode(array("code" => "Error", "message" => "User does not exists", "data" => $users_arr));
     }
 }
 // tell the user credentials are incomplete
