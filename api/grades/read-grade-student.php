@@ -85,9 +85,28 @@ if(!empty($data)){
             echo json_encode(array("code" => "OK", "message" => "No Record fetched","data" => $users_arr));
         }
         
-
-
     } else {
+        $teacher->user_id = $data->student_id;
+        $stud_stmt = $teacher->readOneById();
+        while ($stud_row = $stud_stmt->fetch(PDO::FETCH_ASSOC)){
+            extract($stud_row);
+            $users_arr["student_id"] = $data->student_id;
+            $users_arr["name"] = $first_name . " " . $last_name;
+
+            $subject->grade_year = $grade_year_level;
+            $subject_stmt =  $subject->readByLevel();
+            while ($subj_row = $subject_stmt->fetch(PDO::FETCH_ASSOC)){
+                extract($subj_row);
+                $grades_item = array(
+                    "grading_period" => 0,
+                    "subject_id" => $subject_id,
+                    "subject_name" => $subject_name,
+                    "grade" => 0,
+                    "teacher" => $first_name . " " . $last_name
+                );
+                array_push($users_arr["grades"], $grades_item);
+            }
+        }
         http_response_code(200);
         echo json_encode(array("code" => "Error", "message" => "User does not exists"));
     }
